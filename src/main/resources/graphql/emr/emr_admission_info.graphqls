@@ -1,0 +1,75 @@
+# EmrAdmissionInfo.graphqls
+
+# 实体定义
+type EmrAdmissionInfo {
+    id: ID!
+    patientId: String
+    serialNumber: String
+    wardName: String
+    wardNo: String
+    bedNo: String
+    patientName: String
+    idCardTypeCode: String
+    idCardTypeName: String
+    idCard: String
+    admissionDate: String
+    chiefComplaint: String
+    presentIllnessHis: String
+    healthStatusCode: String
+    pastIllnessHis: String
+    infectionCode: String
+    infectionHis: String
+    vaccinationHis: String
+    operationHis: String
+    bloodTransfusion: String
+    allergyHis: String
+    personalHis: String
+    maritalHis: String
+    menstrualHis: String
+    familyHis: String
+    physicalExamination: String
+    specializedExamination: String
+    studiesSummaryResult: String
+    observationResult: String
+    treatment: String
+    wmInitalDiagnosisCode: String
+    wmInitalDiagnosisName: String
+    tcmInitalDiagnosisCode: String
+    tcmInitalDiagnosisName: String
+    tcmInitalSyndromeCode: String
+    tcmInitalSyndromeName: String
+    initalDiagnosisDate: String
+    wmRevisedDiagnosisCode: String
+    wmRevisedDiagnosisName: String
+    tcmRevisedDiagnosisCode: String
+    tcmRevisedDiagnosisName: String
+    tcmRevisedSyndromeCode: String
+    tcmRevisedSyndromeName: String
+    revisedDiagnosisDate: String
+    wmConfirmedDiagnosisCode: String
+    wmConfirmedDiagnosisName: String
+    tcmConfirmedDiagnosisCode: String
+    tcmConfirmedDiagnosisName: String
+    tcmConfirmedSyndromeCode: String
+    tcmConfirmedSyndromeName: String
+    confirmedDiagnosisDate: String
+    complementaryDiagnosisCode: String
+    complementaryDiagnosisName: String
+    complementaryDiagnosisDate: String
+    admissionDiagnosisOrder: String
+    visitingPhysicianId: String
+    residentPhysicianId: String
+    chiefPhysicianId: String
+    orgCode: String
+    orgName: String
+    deptCode: String
+    deptName: String
+    operatorId: String
+    operationTime: String
+}
+
+# 查询定义
+extend type Query {
+    getEmrAdmissionInfo(id: ID!): EmrAdmissionInfo
+    getAllEmrAdmissionInfos: [EmrAdmissionInfo]
+}

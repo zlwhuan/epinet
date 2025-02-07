@@ -1,0 +1,123 @@
+# EmrInfReport.graphqls
+
+# 实体定义
+type EmrInfReport {
+    id: ID!
+    patientId: String # 患者基本信息 ID
+    serialNumber: String # 就诊流水号
+    activityTypeCode: String # 诊疗活动类型代码
+    activityTypeName: String # 诊疗活动类型名称
+    patientName: String # 患者姓名
+    idCardTypeCode: String # 身份证件类别代码
+    idCardTypeName: String # 身份证件类别名称
+    idCard: String # 身份证件号码
+    genderCode: String # 性别代码
+    genderName: String # 性别名称
+    birthDate: String # 出生日期
+    nationalityCode: String # 国籍代码
+    nationalityName: String # 国籍名称
+    nationCode: String # 民族代码
+    nationName: String # 民族名称
+    permanentAddrCode: String # 户籍地区编码
+    permanentAddrName: String # 户籍地区名称
+    permanentAddrDetail: String # 户籍详细地址
+    currentAddrCode: String # 现住地址代码
+    currentAddrName: String # 现住地址名称
+    currentAddrDetail: String # 现住详细地址
+    workUnit: String # 工作单位
+    maritalStatusCode: String # 婚姻状况代码
+    maritalStatusName: String # 婚姻状况名称
+    educationCode: String # 文化程度代码
+    educationName: String # 文化程度名称
+    nultitudeTypeCode: String # 人群分类代码
+    nultitudeTypeName: String # 人群分类名称
+    nultitudeTypeOther: String # 人群分类其它
+    tel: String # 电话号码
+    contacts: String # 联系人姓名
+    contactsTel: String # 联系人电话
+    onsetDate: String # 发病日期
+    diagnoseTime: String # 诊断时间
+    diseaseCode: String # 疾病诊断代码
+    diseaseName: String # 疾病诊断名称
+    diseaseOther: String # 其他疾病或病毒分型
+    diagnoseStateCode: String # 病例分类代码
+    diagnoseStateName: String # 病例分类名称
+    caseTypeCode: String # 诊断状态代码
+    caseTypeName: String # 诊断状态名称
+    deadDate: String # 死亡日期
+    isDeadByThisCode: String # 死亡是否与此病有关代码
+    isDeadByThisName: String # 死亡是否与此病有关名称
+    symptomsCode: String # 直接死亡诊断编码
+    symptomsName: String # 直接死亡诊断名称
+    laboratoryDetectionVerdictCode: String # 实验室检测结论代码
+    laboratoryDetectionVerdictName: String # 实验室检测结论名称
+    detectionPositiveDate: String # 检测阳性日期
+    detectionOrgCode: String # 检测单位
+    dtDiagnose: String # 实验室确诊日期
+    afpAreatype1Code: String # 病人所属地类型代码
+    afpAreatype1Name: String # 病人所属地类型名称
+    afpPalsyDate: String # 麻痹日期
+    afpDoctorDate: String # 就诊日期
+    afpAreatype2Code: String # 就诊地址类型代码
+    afpAreatype2Name: String # 就诊地址类型名称
+    afpAddrcodeCode: String # 就诊地址编码
+    afpAddrcodeName: String # 就诊地址名称
+    afpAddr: String # 就诊地址
+    afpPalsySymptom: String # 麻痹症状
+    reportDate: String # 报告日期
+    discoveryModeCode: String # 发现方式代码
+    discoveryModeName: String # 发现方式名称
+    discoveryModeOther: String # 发现方式其他
+    venerealDisCode: String # 性病史代码
+    venerealDisName: String # 性病史名称
+    bsTransmissionCode: String # 感染途径代码
+    bsTransmissionName: String # 感染途径名称
+    bsTransmissionOther: String # 感染途径其他
+    contactTypeCode: String # 接触方式代码
+    contactTypeName: String # 接触方式名称
+    injectCount: String # 注射毒品史与病人共用过注射器的人数
+    nonwebCount: String # 非婚异性性接触史与病人有非婚性行为的人数
+    smCount: String # 男男性行为史发生同性性行为的人数
+    contactOther: String # 接触史其他
+    sinfectCode: String # 生殖道沙眼衣原体感染代码
+    sinfectName: String # 生殖道沙眼衣原体感染名称
+    severityCode: String # 是否重症代码
+    severityName: String # 是否重症名称
+    labResultCode: String # 手足口病实验室结果代码
+    labResultName: String # 手足口病实验室结果名称
+    hbsagCode: String # 乙肝 HBsAg 阳性时间代码
+    hbsagName: String # 乙肝 HBsAg 阳性时间名称
+    hbsagFirst: String # 首次出现乙肝症状和体征时间
+    hbsagBuxiang: String # 无症状/不详
+    hbsagAlt: String # 乙肝本次 ALT
+    resultCode: String # 抗-HBcIgM1：1000 检测结果代码
+    hbcigResultName: String # 抗-HBcIgM1：1000 检测结果名称
+    hbliverPunctureCode: String # 肝穿结果（急慢性）代码
+    hbliverPunctureName: String # 肝穿结果（急慢性）名称
+    hbsagChangeCode: String # 恢复期血清 HBsAg 阴转，抗 HBs 阳转
+    hbsagChangeName: String # 恢复期血清 HBsAg 阴转，抗 HBs 阳转
+    contactflagCode: String # 密切接触者有无同症状代码
+    contactflagName: String # 密切接触者有无同症状名称
+    fillDoctor: String # 填卡医生
+    notes: String # 备注
+    ncvSeverityCode: String # 新冠临床严重程度代码
+    ncvSeverityName: String # 新冠临床严重程度名称
+    foreignTypeCode: String # 输入病例类型代码
+    foreignTypeName: String # 输入病例类型名称
+    placeCode: String # 输入来源地代码
+    placeName: String # 输入来源地名称
+    reportZoneCode: String # 报告地区代码
+    reportZoneName: String # 报告地区名称
+    reportOrgCode: String # 报告单位机构代码
+    reportOrgName: String # 报告单位机构名称
+    deptCode: String # 科室代码
+    deptName: String # 科室名称
+    operatorId: String # 操作人 ID
+    operationTime: String # 操作时间
+}
+
+# 扩展查询定义
+extend type Query {
+    getEmrInfReport(id: ID!): EmrInfReport
+    getAllEmrInfReports: [EmrInfReport]
+}

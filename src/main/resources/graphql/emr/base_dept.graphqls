@@ -1,0 +1,17 @@
+# BaseDept.graphqls
+
+# 实体定义
+type BaseDept {
+    id: ID!
+    deptCode: String!
+    deptName: String!
+    targetDeptCode: String
+    targetDeptName: String
+    createTime: String
+}
+
+# 查询定义
+extend type Query {
+    getBaseDept(id: ID!): BaseDept
+    getAllBaseDepts: [BaseDept]
+}

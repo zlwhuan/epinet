@@ -1,0 +1,30 @@
+type EmrOrder {
+    id: ID!
+    patientId: String
+    activityTypeCode: String
+    activityTypeName: String
+    serialNumber: String
+    patientName: String
+    idCardTypeCode: String
+    idCardTypeName: String
+    idCard: String
+    prescriptionNo: String
+    prescriptionTypeCode: String
+    prescriptionIssuanceDate: String
+    prescriptionValidityDays: Int
+    executeDate: String
+    prescriptionIssuanceId: String
+    prescriptionDispensingId: String
+    prescriptionNotes: String
+    orgCode: String
+    orgName: String
+    deptCode: String
+    deptName: String
+    operatorId: String
+    operationTime: String
+}
+
+extend type Query {
+    getEmrOrders: [EmrOrder]
+    getEmrOrderById(id: ID!): EmrOrder
+}

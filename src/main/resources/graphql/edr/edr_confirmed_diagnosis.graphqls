@@ -1,0 +1,30 @@
+type EdrConfirmedDiagnosisInfo {
+    id: ID!
+    mpiId: String
+    visitTypeCode: String
+    diagnoseClassificationCode: String
+    diagnoseStateCode: String
+    diagnoseTime: String
+    onsetDate: String
+    diseaseCode: String
+    caseTypeCode: String
+    ncvSeverityCode: String
+    diagnosisOrgCode: String
+    deptCode: String
+    statisticsFlagCode: String
+    syndromeCode: String
+    iliCode: String
+    opflag: String
+    createOrg: String
+    updateOrg: String
+    createUser: String
+    createTime: String
+    updateUser: String
+    updateTime: String
+    patientId: String
+}
+
+extend type Query {
+    getEdrConfirmedDiagnosisInfos: [EdrConfirmedDiagnosisInfo]
+    getEdrConfirmedDiagnosisInfoById(id: ID!): EdrConfirmedDiagnosisInfo
+}

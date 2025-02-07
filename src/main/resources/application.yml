@@ -1,0 +1,48 @@
+
+spring:
+  application:
+    name: epinet
+  graphql:
+    schema:
+      inspection:
+        enabled: true
+    graphiql:
+      enabled: true
+    path: /graphql
+#      locations: classpath:/graphql/
+  datasource:
+    url: jdbc:mysql://localhost:3306/epi?useSSL=false&serverTimezone=UTC
+    username: root
+    password: Admin@123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+api:
+  base-url: http://localhost:8080
+#graphql:
+#  servlet:
+#    enabled: true
+#    mapping: /graphql
+#    cors-enabled: true
+#  playground:
+#    enabled: true
+#  tools:
+#    schema-location-pattern: classpath*:graphql/**/*.graphqls
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        orm:
+          jdbc:
+            bind: trace
+server:
+  port: 80
+
+

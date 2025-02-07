@@ -1,0 +1,48 @@
+# EmrExClinical.graphqls
+
+# 实体定义
+type EmrExClinical {
+    id: ID!
+    patientId: String # 患者ID
+    activityTypeCode: String # 诊疗活动类型代码
+    activityTypeName: String # 诊疗活动类型名称
+    serialNumber: String # 就诊流水号
+    patientName: String # 患者姓名
+    idCardTypeCode: String # 证件类别代码
+    idCardTypeName: String # 证件类别名称
+    idCard: String # 证件号码
+    wardName: String # 病区名称
+    wardNo: String # 病区号
+    bedNo: String # 床号
+    applicationFormNo: String # 申请单号
+    applyDeptName: String # 申请科室名称
+    applyDeptCode: String # 申请科室代码
+    applyOrgCode: String # 申请机构代码
+    applyOrgName: String # 申请机构名称
+    symptomStartDate: String # 症状开始日期
+    symptomEndDate: String # 症状结束日期
+    symptomDesc: String # 症状描述
+    treatmentDesc: String # 既往治疗情况
+    specialExaminationCode: String # 特殊检查代码
+    examinationTypeCode: String # 检查类型代码
+    examinationTypeName: String # 检查类型名称
+    examinationObjectiveDesc: String # 检查目标描述
+    examinationSubjectiveDesc: String # 检查主观描述
+    examinationNotes: String # 检查备注
+    examinationReportNo: String # 检查报告编号
+    examinationReportDate: String # 检查报告日期
+    examinationReportId: String # 检查报告ID
+    chiefComplaint: String # 主诉
+    orgCode: String # 医疗机构代码
+    orgName: String # 医疗机构名称
+    deptCode: String # 申请科室代码
+    deptName: String # 申请科室名称
+    operatorId: String # 操作人ID
+    operationTime: String # 操作时间
+}
+
+# 扩展查询定义
+extend type Query {
+    getEmrExClinical(id: ID!): EmrExClinical
+    getAllEmrExClinicals: [EmrExClinical]
+}

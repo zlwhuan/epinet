@@ -1,0 +1,32 @@
+type EdrLaboratoryTestingInfo {
+    id: ID!
+    mpiId: String
+    examinationItemCode: String
+    specimenNo: String
+    specimenCategory: String
+    specimenSamplingDate: String
+    specimenReceivingDate: String
+    examinationDate: String
+    examinationMethodCode: String
+    sourceExaminationResultCode: String
+    examinationQuantification: String
+    examinationQuantificationUnit: String
+    examinationQuantificationUpper: String
+    examinationQuantificationLower: String
+    examinationQuantificationRi: String
+    examinationReportDate: String
+    month: String
+    confirmStatusCode: String
+    createOrg: String
+    updateOrg: String
+    createUser: String
+    createTime: String
+    updateUser: String
+    updateTime: String
+    patientId: String
+}
+
+extend type Query {
+    getEdrLaboratoryTestingInfos: [EdrLaboratoryTestingInfo]
+    getEdrLaboratoryTestingInfoById(id: ID!): EdrLaboratoryTestingInfo
+}

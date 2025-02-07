@@ -1,0 +1,57 @@
+# EmrAdmissionRecord.graphqls
+
+# 实体定义
+type EmrAdmissionRecord {
+    id: ID!
+    patientId: String # 患者 ID
+    serialNumber: String # 住院号
+    patientName: String # 患者姓名
+    idCardTypeCode: String # 身份证件类别代码
+    idCardTypeName: String # 身份证件类别名称
+    idCard: String # 身份证件号码
+    healthCardNo: String # 居民健康卡号
+    payMethodCode: String # 医疗付费方式代码
+    payMethodName: String # 医疗付费方式名称
+    admissionNum: String # 住院次数
+    regNo: String # 病案号
+    admissionDate: String # 入院日期时间
+    admissionDeptCode: String # 入院科别代码
+    admissionDeptName: String # 入院科别名称
+    wardNo: String # 入院病房编号
+    dischargeDate: String # 出院日期时间
+    dischargeDeptCode: String # 出院科别代码
+    dischargeDeptName: String # 出院科别名称
+    dischargeWard: String # 出院病房
+    admissionDays: String # 实际住院天数
+    wmOutpatientDiagnosisCode: String # 门（急)诊诊断代码
+    wmOutpatientDiagnosisName: String # 门（急)诊诊断名称
+    dischargeDiagnosisCode: String # 出院诊断-主要西医诊断代码
+    dischargeDiagnosisName: String # 出院诊断-主要西医诊断名称
+    wmOtherDiagnosisCode: String # 出院诊断-其他诊断代码
+    wmOtherDiagnosisName: String # 出院诊断-其他诊断名称
+    externalCausesCode: String # 损伤中毒的外部原因疾病编码
+    externalCausesName: String # 损伤中毒的外部原因疾病名称
+    externalCausesSystemName: String # 损伤中毒的外部原因
+    pathologicalDiagnosisCode: String # 病理诊断编码
+    pathologicalDiagnosisName: String # 病理诊断名称
+    pathologicalNo: String # 病理号
+    allergyCode: String # 药物过敏标志
+    allergyDrug: String # 过敏药物
+    autopsyCode: String # 死亡患者尸检标志
+    chiefPhysicianId: String # 主治医师
+    residentPhysicianId: String # 住院医师
+    acceptOrgCode: String # 拟接收医疗机构代码
+    acceptOrgName: String # 拟接收医疗机构名称
+    orgCode: String # 医疗机构代码
+    orgName: String # 医疗机构名称
+    deptCode: String # 科室代码
+    deptName: String # 科室名称
+    operatorId: String # 操作人 ID
+    operationTime: String # 操作时间
+}
+
+# 查询定义
+extend type Query {
+    getEmrAdmissionRecord(id: ID!): EmrAdmissionRecord
+    getAllEmrAdmissionRecords: [EmrAdmissionRecord]
+}

@@ -1,0 +1,25 @@
+type EdrExposureHistoryInfo {
+    id: ID!
+    mpiId: String
+    contactflagCode: String
+    venerealDisCode: String
+    contactTypeCode: String
+    injectCount: String
+    nonwebCount: String
+    smCount: String
+    contactObjectCode: String
+    contactTime: String
+    discoveryModeCode: String
+    createOrg: String
+    updateOrg: String
+    createUser: String
+    createTime: String
+    updateUser: String
+    updateTime: String
+    patientId: String
+}
+
+extend type Query {
+    getEdrExposureHistoryInfos: [EdrExposureHistoryInfo]
+    getEdrExposureHistoryInfoById(id: ID!): EdrExposureHistoryInfo
+}

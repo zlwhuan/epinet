@@ -1,0 +1,63 @@
+type EmrActivityInfo{
+    id: ID!
+    """患者基本信息 ID"""
+    patientId: ID!
+    """诊疗活动类型代码"""
+    activityTypeCode: String
+    """诊疗活动类型名称"""
+    activityTypeName: String
+    """就诊流水号"""
+    serialNumber: String
+    """诊疗活动发生日期时间"""
+    activityTime: String
+    """患者姓名"""
+    patientName: String
+    """身份证件类别代码"""
+    idCardTypeCode: String
+    """身份证件类别名称"""
+    idCardTypeName: String
+    """身份证件号码"""
+    idCard: String
+    """主诉"""
+    chiefComplaint: String
+    """现病史/入院情况"""
+    presentIllnessHis: String
+    """体格检查"""
+    physicalExamination: String
+    """辅助检查"""
+    studiesSummaryResult: String
+    """诊断时间"""
+    diagnoseTime: String
+    """疾病代码"""
+    diseaseCode: String
+    """疾病名称"""
+    diseaseName: String
+    """西医疾病诊断编码"""
+    wmDiseaseCode: String
+    """西医疾病诊断名称"""
+    wmDiseaseName: String
+    """中医病名代码"""
+    tcmDiseaseCode: String
+    """中医病名名称"""
+    tcmDiseaseName: String
+    """中医证候编码"""
+    tcmSyndromeCode: String
+    """中医证候名称"""
+    tcmSyndromeName: String
+    """诊断医生"""
+    fillDoctor: String
+    """科室代码"""
+    deptCode: String
+    """科室名称"""
+    deptName: String
+    """医疗机构代码"""
+    orgCode: String
+    """医疗机构名称"""
+    orgName: String
+    """操作人 ID"""
+    operatorId: String
+    """操作时间"""
+    operationTime: String
+    """患者信息"""
+    patientInfo: EmrPatientInfo
+}

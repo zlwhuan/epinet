@@ -1,0 +1,31 @@
+type EdrPersonalMasterData {
+    id: ID!
+    mpiId: String
+    patientName: String
+    idCard: String
+    birthDate: String
+    genderCode: String
+    nationalityCode: String
+    nationCode: String
+    permanentAddrCode: String
+    permanentAddrDetail: String
+    currentAddrCode: String
+    currentAddrDetail: String
+    maritalStatusCode: String
+    contactsTel: String
+    contactsIdCard: String
+    contacts: String
+    tempIdCard: String
+    formerName: String
+    createOrg: String
+    updateOrg: String
+    createUser: String
+    createTime: String
+    updateUser: String
+    updateTime: String
+}
+
+extend type Query {
+    getEdrPersonalMasterDatas: [EdrPersonalMasterData]
+    getEdrPersonalMasterDataById(id: ID!): EdrPersonalMasterData
+}

@@ -1,0 +1,48 @@
+# EmrExLab.graphqls
+
+# 实体定义
+type EmrExLab {
+    id: ID!
+    patientId: String # 患者基本信息 ID
+    activityTypeCode: String # 就诊记录类型代码
+    activityTypeName: String # 就诊记录类型名称
+    serialNumber: String # 就诊流水号
+    patientName: String # 患者姓名
+    idCardTypeCode: String # 身份证件类别代码
+    idCardTypeName: String # 身份证件类别名称
+    idCard: String # 身份证件号码
+    wardNo: String # 病房号
+    wardName: String # 病区名称
+    bedNo: String # 病床号
+    applicationFormNo: String # 电子申请单编号
+    applyDeptCode: String # 检验申请科室代码
+    applyDeptName: String # 检验申请科室名称
+    applyOrgCode: String # 检验申请机构代码
+    applyOrgName: String # 检验申请机构名称
+    applyPhysicianId: String # 检验申请医师
+    specimenCategoryCode: String # 标本类别代码
+    specimenCategoryName: String # 标本类别名称
+    specimenNo: String # 检验标本号
+    specimenSamplingDate: String # 标本采样日期时间
+    specimenReceivingDate: String # 接收标本日期时间
+    examinationPhysicianId: String # 检验医师
+    examinationDate: String # 检验日期
+    examinationReportNo: String # 检验报告单编号
+    examinationObjectiveDesc: String # 检验报告结果-客观所见
+    examinationSubjectiveDesc: String # 检验报告结果-主观提示
+    examinationNotes: String # 检验报告备注
+    examinationReportDate: String # 检验报告日期
+    examinationReportId: String # 报告医师
+    orgCode: String # 检验报告机构编码
+    orgName: String # 检验报告机构名称
+    deptCode: String # 检验报告科室代码
+    deptName: String # 检验报告科室名称
+    operatorId: String # 操作人 ID
+    operationTime: String # 操作时间
+}
+
+# 扩展查询定义
+extend type Query {
+    getEmrExLab(id: ID!): EmrExLab
+    getAllEmrExLabs: [EmrExLab]
+}

@@ -1,0 +1,27 @@
+type EmrVitalSignsRecord {
+    id: ID!
+    patientId: String
+    activityTypeCode: String
+    activityTypeName: String
+    serialNumber: String
+    patientName: String
+    idCardTypeCode: String
+    idCardTypeName: String
+    idCard: String
+    createDate: String
+    ventilatorUsedCode: String
+    ventilatorUsedName: String
+    criticalCareCode: String
+    criticalCareName: String
+    orgCode: String
+    orgName: String
+    deptCode: String
+    deptName: String
+    operatorId: String
+    operationTime: String
+}
+
+extend type Query {
+    getEmrVitalSignsRecords: [EmrVitalSignsRecord]
+    getEmrVitalSignsRecordById(id: ID!): EmrVitalSignsRecord
+}

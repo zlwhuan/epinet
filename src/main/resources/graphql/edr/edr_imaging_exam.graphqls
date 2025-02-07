@@ -1,0 +1,22 @@
+type EdrImagingExaminationInfo {
+    id: ID!
+    mpiId: String
+    activityTime: String
+    timestamp: String
+    examinationItemCode: String
+    examinationItemDes: String
+    orgCode: String
+    month: String
+    createOrg: String
+    updateOrg: String
+    createUser: String
+    createTime: String
+    updateUser: String
+    updateTime: String
+    patientId: String
+}
+
+extend type Query {
+    getEdrImagingExaminationInfos: [EdrImagingExaminationInfo]
+    getEdrImagingExaminationInfoById(id: ID!): EdrImagingExaminationInfo
+}

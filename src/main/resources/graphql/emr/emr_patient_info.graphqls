@@ -1,0 +1,94 @@
+type EmrPatientInfo {
+    """ID"""
+    id: ID!
+    """患者 ID"""
+    patientId: String
+    """患者姓名"""
+    patientName: String!
+    """身份证件类别代码"""
+    idCardTypeCode: String
+    """身份证件类别名称"""
+    idCardTypeName: String
+    """身份证件号码"""
+    idCard: String
+    """性别代码"""
+    genderCode: String
+    """性别名称"""
+    genderName: String
+    """出生日期"""
+    birthDate: String
+    """国籍代码"""
+    nationalityCode: String
+    """国籍名称"""
+    nationalityName: String
+    """民族代码"""
+    nationCode: String
+    """民族名称"""
+    nationName: String
+    """户籍地区编码"""
+    permanentAddrCode: String
+    """户籍详细地址"""
+    permanentAddrDetail: String
+    """现住地址代码"""
+    currentAddrCode: String
+    """现住详细地址"""
+    currentAddrDetail: String
+    """工作单位"""
+    workunit: String
+    """婚姻状况代码"""
+    maritalStatusCode: String
+    """婚姻状况名称"""
+    maritalStatusName: String
+    """文化程度代码"""
+    educationCode: String
+    """文化程度名称"""
+    educationName: String
+    """人群分类代码"""
+    nultitudeTypeCode: String
+    """人群分类名称"""
+    nultitudeTypeName: String
+    """人群分类其他"""
+    nultitudeTypeOther: String
+    """电话号码"""
+    tel: String
+    """联系人姓名"""
+    contacts: String
+    """联系人电话"""
+    contactsTel: String
+    """医疗机构代码"""
+    orgCode: String
+    """医疗机构名称"""
+    orgName: String
+    """操作人 ID"""
+    operatorId: String
+    """操作时间"""
+    operationTime: String
+    """诊疗活动列表"""
+    activityList: [EmrActivityInfo]
+    """患者入院记录信息"""
+    admissionList: [EmrAdmissionInfo]
+
+    admissionRecordList: [EmrAdmissionRecord]
+
+    dailyCourseList: [EmrDailyCourse]
+
+    deathList: [EmrDeathInfo]
+
+    dischargeList: [EmrDischargeInfo]
+
+    exClinicalList: [EmrExClinical]
+
+    exLabList: [EmrExLab]
+
+    firstCourseList: [EmrFirstCourse]
+
+    infReportList: [EmrInfReport]
+
+    orderList: [EmrOrder]
+
+    outpatientObsList: [EmrOutpatientObs]
+
+    outpatientRecordList: [EmrOutpatientRecord]
+
+    vitalSignsRecordList: [EmrVitalSignsRecord]
+}

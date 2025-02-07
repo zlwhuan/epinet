@@ -1,0 +1,22 @@
+# BaseUser.graphqls
+
+# 实体定义
+type BaseUser {
+    id: ID!
+    orgCode: String!
+    deptCode: String!
+    userName: String!
+    idCardTypeCode: String
+    idCard: String
+    tel: String
+    physicianNo: String
+    loginName: String!
+    userTypeCode: String
+    createTime: String!
+}
+
+# 查询定义
+extend type Query {
+    getBaseUser(id: ID!): BaseUser
+    getAllBaseUsers: [BaseUser]
+}

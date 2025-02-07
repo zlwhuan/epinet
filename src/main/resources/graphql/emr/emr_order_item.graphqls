@@ -1,0 +1,22 @@
+type EmrOrderItem {
+    id: ID!
+    orderId: String!
+    drugCode: String!
+    drugName: String!
+    drugSpecifications: String
+    drugDosageCode: String
+    drugDosageUnitCode: String
+    drugDosageUnitName: String
+    drugDosageTotal: String
+    tcmPrescription: String
+    tcmNumber: Int
+    tcmDecoctionMethod: String
+    tcmUseMethod: String
+    operatorId: String!
+    operationTime: String
+}
+
+extend type Query {
+    getEmrOrderItems: [EmrOrderItem]
+    getEmrOrderItemById(id: ID!): EmrOrderItem
+}

@@ -1,0 +1,51 @@
+# EmrDischargeInfo.graphqls
+
+# 实体定义
+type EmrDischargeInfo {
+    id: ID!
+    patientId: String # 患者 ID
+    serialNumber: String # 住院号
+    patientName: String # 患者姓名
+    idCardTypeCode: String # 身份证件类别代码
+    idCardTypeName: String # 身份证件类别名称
+    idCard: String # 身份证件号码
+    wardName: String # 病区名称
+    wardNo: String # 病房号
+    bedNo: String # 病床号
+    admissionDate: String # 入院日期时间
+    admissionDesc: String # 入院描述
+    admissionDiagnosisCode: String # 入院诊断代码
+    admissionDiagnosisName: String # 入院诊断名称
+    studiesSummaryResult: String # 辅助检查
+    observationResult: String # 观察结果
+    treatment: String # 住院治疗
+    treatmentDesc: String # 治疗描述
+    tcmDecoctionMethod: String # 中药煎煮法
+    tcmUseMethod: String # 中药用药方法
+    dischargeDesc: String # 出院描述
+    dischargeDate: String # 出院日期时间
+    dischargeDiagnosisCode: String # 出院诊断代码
+    dischargeDiagnosisName: String # 出院诊断名称
+    tcmDischargeDiagnosisCode: String # 出院诊断-中医病名代码
+    tcmDischargeDiagnosisCame: String # 出院诊断-中医病名名称
+    tcmDischargeSyndromeCode: String # 出院诊断-中医证候代码
+    tcmDischargeSyndromeCame: String # 出院诊断-中医证候名称
+    dischargeSymptomsSigns: String # 出院时症状与体征
+    dischargeOrder: String # 出院医嘱
+    diseaseProgressionCode: String # 病情转归代码
+    diseaseProgressionCame: String # 病情转归名称
+    residentPhysicianId: String # 住院医师
+    chiefPhysicianId: String # 主治医师
+    orgCode: String # 医疗机构代码
+    orgName: String # 医疗机构名称
+    deptCode: String # 科室代码
+    deptName: String # 科室名称
+    operatorId: String # 操作人 ID
+    operationTime: String # 操作时间
+}
+
+# 扩展查询定义
+extend type Query {
+    getEmrDischargeInfo(id: ID!): EmrDischargeInfo
+    getAllEmrDischargeInfos: [EmrDischargeInfo]
+}

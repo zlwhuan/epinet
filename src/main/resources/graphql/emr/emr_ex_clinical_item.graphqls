@@ -1,0 +1,21 @@
+# EmrExClinicalItem.graphqls
+
+# 实体定义
+type EmrExClinicalItem {
+    id: ID!
+    exClinicalId: String # 检查报告 ID
+    itemCode: String # 检查项目代码
+    itemName: String # 检查项目名称
+    examinationResultCode: String # 检查结果代码
+    examinationResultName: String # 检查结果名称
+    examinationQuantification: String # 检查定量结果
+    examinationQuantificationUnit: String # 检查定量结果计量单位
+    operatorId: String # 操作人 ID
+    operationTime: String # 操作时间
+}
+
+# 扩展查询定义
+extend type Query {
+    getEmrExClinicalItem(id: ID!): EmrExClinicalItem
+    getAllEmrExClinicalItems: [EmrExClinicalItem]
+}

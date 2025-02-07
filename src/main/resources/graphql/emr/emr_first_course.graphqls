@@ -1,0 +1,49 @@
+# EmrFirstCourse.graphqls
+
+# 实体定义
+type EmrFirstCourse {
+    id: ID!
+    patientId: String # 患者 ID
+    serialNumber: String # 住院号
+    patientName: String # 患者姓名
+    idCardTypeCode: String # 身份证件类别代码
+    idCardTypeName: String # 身份证件类别名称
+    idCard: String # 身份证件号码
+    wardName: String # 病区名称
+    wardNo: String # 病房号
+    bedNo: String # 病床号
+    createTime: String # 记录创建时间
+    chiefComplaint: String # 主诉
+    presentIllnessHis: String # 病例特点
+    observationResult: String # 中医“四诊”观察结果
+    diagnosisBasis: String # 诊断依据
+    wmInitalDiagnosisCode: String # 初步诊断-西医诊断编码
+    wmInitalDiagnosisName: String # 初步诊断-西医诊断名称
+    tcmInitalDiagnosisCode: String # 初步诊断-中医病名代码
+    tcmInitalDiagnosisName: String # 初步诊断-中医病名名称
+    tcmInitalSyndromeCode: String # 初步诊断-中医证候代码
+    tcmInitalSyndromeName: String # 初步诊断-中医证候名称
+    wmDiffDiagnosisCode: String # 鉴别诊断-西医诊断代码
+    wmDiffDiagnosisName: String # 鉴别诊断-西医诊断名称
+    tcmPrimaryDiagnosisCode: String # 鉴别诊断-中医病名代码
+    tcmPrimaryDiagnosisName: String # 鉴别诊断-中医病名名称
+    tcmPrimarySyndromeCode: String # 鉴别诊断-中医证候代码
+    tcmPrimarySyndromeName: String # 鉴别诊断-中医证候名称
+    treatment: String # 治则治法
+    treatmentPlan: String # 诊疗计划
+    diseaseProgressionCode: String # 病情转归代码
+    diseaseProgressionName: String # 病情转归名称
+    residentPhysicianId: String # 住院医师
+    orgCode: String # 医疗机构代码
+    orgName: String # 医疗机构名称
+    deptCode: String # 科室代码
+    deptName: String # 科室名称
+    operatorId: String # 操作人 ID
+    operationTime: String # 操作时间
+}
+
+# 扩展查询定义
+extend type Query {
+    getEmrFirstCourse(id: ID!): EmrFirstCourse
+    getAllEmrFirstCourses: [EmrFirstCourse]
+}

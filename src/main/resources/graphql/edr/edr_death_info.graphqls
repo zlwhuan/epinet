@@ -1,0 +1,21 @@
+type EdrDeathInfo {
+    id: ID!
+    mpiId: String
+    deadDate: String
+    directCauseCode: String
+    deathReasonTypeCode: String
+    deathReasonDetailCode: String
+    deathInfoSourceCode: String
+    createOrg: String
+    updateOrg: String
+    createUser: String
+    createTime: String
+    updateUser: String
+    updateTime: String
+    patientId: String
+}
+
+extend type Query {
+    getEdrDeathInfos: [EdrDeathInfo]
+    getEdrDeathInfoById(id: ID!): EdrDeathInfo
+}

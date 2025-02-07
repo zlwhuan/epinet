@@ -1,0 +1,46 @@
+type EmrOutpatientRecord {
+    id: ID!
+    patientId: String
+    serialNumber: String
+    patientName: String
+    idCardTypeCode: String
+    idCardTypeName: String
+    idCard: String
+    allergyHisFlag: String
+    allergyHis: String
+    outpatientDate: String
+    initialDiagnosisCode: String
+    chiefComplaint: String
+    presentIllnessHis: String
+    pastIllnessHis: String
+    infectionHis: String
+    vaccinationHis: String
+    operationHis: String
+    bloodTransfusion: String
+    personalHis: String
+    maritalHis: String
+    menstrualHis: String
+    familyHis: String
+    physicalExamination: String
+    observationResult: String
+    studiesSummaryResult: String
+    wmDiagnosisCode: String
+    wmDiagnosisName: String
+    tcmInitalDiagnosisCode: String
+    tcmInitalDiagnosisName: String
+    tcmInitalSyndromeCode: String
+    tcmInitalSyndromeName: String
+    differentiationBasis: String
+    treatment: String
+    deptCode: String
+    deptName: String
+    orgCode: String
+    orgName: String
+    operatorId: String
+    operationTime: String
+}
+
+extend type Query {
+    getEmrOutpatientRecords: [EmrOutpatientRecord]
+    getEmrOutpatientRecordById(id: ID!): EmrOutpatientRecord
+}

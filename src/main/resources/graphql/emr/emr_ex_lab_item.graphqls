@@ -1,0 +1,26 @@
+# EmrExLabItem.graphqls
+
+# 实体定义
+type EmrExLabItem {
+    id: ID!
+    exLabId: String # 检验报告ID
+    itemCode: String # 院内检验项目代码
+    itemName: String # 院内检验项目名称
+    sourceExaminationResultCode: String # 检验定性结果代码
+    sourceExaminationResultName: String # 检验定性结果名称
+    examinationResultCode: String # 标化检验定性结果代码
+    examinationResultName: String # 标化检验定性结果名称
+    examinationQuantification: String # 检验定量结果
+    examinationQuantificationUnit: String # 检验定量结果计量单位
+    examinationQuantificationUpper: String # 检验定量结果参考区间-上限
+    examinationQuantificationLower: String # 检验定量结果参考区间-下限
+    examinationQuantificationRi: String # 检验定量结果超出或低于参考值
+    operatorId: String # 操作人 ID
+    operationTime: String # 操作时间
+}
+
+# 扩展查询定义
+extend type Query {
+    getEmrExLabItem(id: ID!): EmrExLabItem
+    getAllEmrExLabItems: [EmrExLabItem]
+}

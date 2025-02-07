@@ -1,0 +1,24 @@
+type EdrPersonalStatus {
+    id: ID!
+    mpiId: String
+    workunit: String
+    educationCode: String
+    nultitudeTypeCode: String
+    allergyDrug: String
+    diseaseCode: String
+    diagnoseStateCode: String
+    flowStatusCode: String
+    riskRatingCode: String
+    screeningStatusCode: String
+    createOrg: String
+    updateOrg: String
+    createUser: String
+    createTime: String
+    updateUser: String
+    updateTime: String
+}
+
+extend type Query {
+    getEdrPersonalStatuses: [EdrPersonalStatus]
+    getEdrPersonalStatusById(id: ID!): EdrPersonalStatus
+}

@@ -1,0 +1,21 @@
+type EdrHospitalizationInfo {
+    id: ID!
+    mpiId: String
+    admissionDate: String
+    dischargeDate: String
+    admissionDiagnosisCode: String
+    dischargeDiagnosisCode: String
+    diseaseProgressionCode: String
+    createOrg: String
+    updateOrg: String
+    createUser: String
+    createTime: String
+    updateUser: String
+    updateTime: String
+    patientId: String
+}
+
+extend type Query {
+    getEdrHospitalizationInfos: [EdrHospitalizationInfo]
+    getEdrHospitalizationInfoById(id: ID!): EdrHospitalizationInfo
+}
