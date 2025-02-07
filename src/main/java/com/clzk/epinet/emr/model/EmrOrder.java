@@ -24,7 +24,7 @@ public class EmrOrder extends BaseEntity {
      * 患者基本信息 ID
      */
     @Column(name = "patient_id")
-    private String patientId;
+    private Long patientId;
 
     /**
      * 就诊记录类型代码

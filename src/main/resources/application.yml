@@ -34,14 +34,14 @@ api:
 #    enabled: true
 #  tools:
 #    schema-location-pattern: classpath*:graphql/**/*.graphqls
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: debug
-        orm:
-          jdbc:
-            bind: trace
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        SQL: debug
+#        orm:
+#          jdbc:
+#            bind: trace
 server:
   port: 80
 

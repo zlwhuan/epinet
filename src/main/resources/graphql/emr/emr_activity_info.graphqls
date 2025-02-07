@@ -58,6 +58,6 @@ type EmrActivityInfo{
     operatorId: String
     """操作时间"""
     operationTime: String
-    """患者信息"""
-    patientInfo: EmrPatientInfo
+#    """患者信息"""
+#    patientInfo: EmrPatientInfo
 }

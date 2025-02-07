@@ -4,6 +4,9 @@ import com.clzk.epinet.base.repository.BaseRepository;
 import com.clzk.epinet.emr.model.EmrAdmissionInfo;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface EmrAdmissionInfoRepository  extends BaseRepository<EmrAdmissionInfo> {
+    List<EmrAdmissionInfo> findAllByPatientId(Long patientId);
 }

@@ -15,7 +15,7 @@ import lombok.Data;
 @EqualsAndHashCode(callSuper = true)
 public class EmrAdmissionInfo extends BaseEntity {
 
-    private String patientId; // 患者 ID
+    private Long patientId; // 患者 ID
     private String serialNumber; // 住院号
     private String wardName; // 病区名称
     private String wardNo; // 入院病房编号

@@ -19,7 +19,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class EmrPatientInfo extends BaseEntity {
 
-    private String patientId; // 患者 ID
+    private Long patientId; // 患者 ID
     private String patientName; // 患者姓名
     private String idCardTypeCode; // 身份证件类别代码
     private String idCardTypeName; // 身份证件类别名称

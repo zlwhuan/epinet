@@ -1,6 +1,6 @@
 type EmrVitalSignsRecord {
     id: ID!
-    patientId: String
+    patientId: ID
     activityTypeCode: String
     activityTypeName: String
     serialNumber: String
@@ -21,7 +21,7 @@ type EmrVitalSignsRecord {
     operationTime: String
 }
 
-extend type Query {
-    getEmrVitalSignsRecords: [EmrVitalSignsRecord]
-    getEmrVitalSignsRecordById(id: ID!): EmrVitalSignsRecord
-}
+#extend type Query {
+#    getEmrVitalSignsRecords: [EmrVitalSignsRecord]
+#    getEmrVitalSignsRecordById(id: ID!): EmrVitalSignsRecord
+#}

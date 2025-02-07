@@ -3,7 +3,7 @@
 # 实体定义
 type EmrInfReport {
     id: ID!
-    patientId: String # 患者基本信息 ID
+    patientId: ID # 患者基本信息 ID
     serialNumber: String # 就诊流水号
     activityTypeCode: String # 诊疗活动类型代码
     activityTypeName: String # 诊疗活动类型名称
@@ -117,7 +117,7 @@ type EmrInfReport {
 }
 
 # 扩展查询定义
-extend type Query {
-    getEmrInfReport(id: ID!): EmrInfReport
-    getAllEmrInfReports: [EmrInfReport]
-}
+#extend type Query {
+#    getEmrInfReport(id: ID!): EmrInfReport
+#    getAllEmrInfReports: [EmrInfReport]
+#}

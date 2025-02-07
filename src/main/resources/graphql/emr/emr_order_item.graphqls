@@ -16,7 +16,7 @@ type EmrOrderItem {
     operationTime: String
 }
 
-extend type Query {
-    getEmrOrderItems: [EmrOrderItem]
-    getEmrOrderItemById(id: ID!): EmrOrderItem
-}
+#extend type Query {
+#    getEmrOrderItems: [EmrOrderItem]
+#    getEmrOrderItemById(id: ID!): EmrOrderItem
+#}

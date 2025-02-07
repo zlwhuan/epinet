@@ -26,5 +26,5 @@ public class EdrDeathInfo extends BaseEntity {
     private String createTime;             // 创建时间
     private String updateUser;             // 修改人
     private String updateTime;             // 修改时间
-    private String patientId;              // 个人主状态信息 ID
+    private Long patientId;              // 个人主状态信息 ID
 }

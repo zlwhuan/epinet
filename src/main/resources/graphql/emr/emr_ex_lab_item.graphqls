@@ -20,7 +20,7 @@ type EmrExLabItem {
 }
 
 # 扩展查询定义
-extend type Query {
-    getEmrExLabItem(id: ID!): EmrExLabItem
-    getAllEmrExLabItems: [EmrExLabItem]
-}
+#extend type Query {
+#    getEmrExLabItem(id: ID!): EmrExLabItem
+#    getAllEmrExLabItems: [EmrExLabItem]
+#}

@@ -11,7 +11,7 @@ type BaseDept {
 }
 
 # 查询定义
-extend type Query {
-    getBaseDept(id: ID!): BaseDept
-    getAllBaseDepts: [BaseDept]
-}
+#extend type Query {
+#    getBaseDept(id: ID!): BaseDept
+#    getAllBaseDepts: [BaseDept]
+#}

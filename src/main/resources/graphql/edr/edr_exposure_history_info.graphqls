@@ -16,10 +16,10 @@ type EdrExposureHistoryInfo {
     createTime: String
     updateUser: String
     updateTime: String
-    patientId: String
+    patientId: ID
 }
 
-extend type Query {
-    getEdrExposureHistoryInfos: [EdrExposureHistoryInfo]
-    getEdrExposureHistoryInfoById(id: ID!): EdrExposureHistoryInfo
-}
+#extend type Query {
+#    getEdrExposureHistoryInfos: [EdrExposureHistoryInfo]
+#    getEdrExposureHistoryInfoById(id: ID!): EdrExposureHistoryInfo
+#}

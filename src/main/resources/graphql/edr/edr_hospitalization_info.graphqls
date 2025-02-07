@@ -12,10 +12,10 @@ type EdrHospitalizationInfo {
     createTime: String
     updateUser: String
     updateTime: String
-    patientId: String
+    patientId: ID
 }
 
-extend type Query {
-    getEdrHospitalizationInfos: [EdrHospitalizationInfo]
-    getEdrHospitalizationInfoById(id: ID!): EdrHospitalizationInfo
-}
+#extend type Query {
+#    getEdrHospitalizationInfos: [EdrHospitalizationInfo]
+#    getEdrHospitalizationInfoById(id: ID!): EdrHospitalizationInfo
+#}

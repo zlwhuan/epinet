@@ -15,7 +15,7 @@ type EmrExClinicalItem {
 }
 
 # 扩展查询定义
-extend type Query {
-    getEmrExClinicalItem(id: ID!): EmrExClinicalItem
-    getAllEmrExClinicalItems: [EmrExClinicalItem]
-}
+#extend type Query {
+#    getEmrExClinicalItem(id: ID!): EmrExClinicalItem
+#    getAllEmrExClinicalItems: [EmrExClinicalItem]
+#}

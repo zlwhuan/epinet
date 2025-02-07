@@ -3,7 +3,7 @@
 # 实体定义
 type EmrDeathInfo {
     id: ID!
-    patientId: String # 患者基本信息 ID
+    patientId: ID # 患者基本信息 ID
     activityTypeCode: String # 就诊记录类型代码
     activityTypeName: String # 就诊记录类型名称
     serialNumber: String # 就诊流水号
@@ -27,7 +27,7 @@ type EmrDeathInfo {
 }
 
 # 扩展查询定义
-extend type Query {
-    getEmrDeathInfo(id: ID!): EmrDeathInfo
-    getAllEmrDeathInfos: [EmrDeathInfo]
-}
+#extend type Query {
+#    getEmrDeathInfo(id: ID!): EmrDeathInfo
+#    getAllEmrDeathInfos: [EmrDeathInfo]
+#}

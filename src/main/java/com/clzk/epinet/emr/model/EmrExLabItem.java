@@ -22,7 +22,7 @@ public class EmrExLabItem extends BaseEntity {
      * 检验报告ID
      */
     @Column(name = "ex_lab_id")
-    private String exLabId;
+    private Long exLabId;
 
     /**
      * 院内检验项目代码

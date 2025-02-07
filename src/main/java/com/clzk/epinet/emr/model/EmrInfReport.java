@@ -17,7 +17,7 @@ import lombok.Data;
 public class EmrInfReport extends BaseEntity {
 
     @Column(length = 50)
-    private String patientId; // 患者基本信息 ID
+    private Long patientId; // 患者基本信息 ID
     @Column(length = 50)
     private String serialNumber; // 就诊流水号
     @Column(length = 20)

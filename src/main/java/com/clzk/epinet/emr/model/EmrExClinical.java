@@ -24,7 +24,7 @@ public class EmrExClinical extends BaseEntity {
 
     /** 患者ID */
     @Column(name = "patient_id")
-    private String patientId;
+    private Long patientId;
 
     /** 诊疗活动类型代码 */
     @Column(name = "activity_type_code")

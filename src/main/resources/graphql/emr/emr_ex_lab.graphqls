@@ -3,7 +3,7 @@
 # 实体定义
 type EmrExLab {
     id: ID!
-    patientId: String # 患者基本信息 ID
+    patientId: ID # 患者基本信息 ID
     activityTypeCode: String # 就诊记录类型代码
     activityTypeName: String # 就诊记录类型名称
     serialNumber: String # 就诊流水号
@@ -39,10 +39,11 @@ type EmrExLab {
     deptName: String # 检验报告科室名称
     operatorId: String # 操作人 ID
     operationTime: String # 操作时间
+    exLabItemList: [EmrExLabItem] # 检验项目明细列表
 }
 
 # 扩展查询定义
-extend type Query {
-    getEmrExLab(id: ID!): EmrExLab
-    getAllEmrExLabs: [EmrExLab]
-}
+#extend type Query {
+#    getEmrExLab(id: ID!): EmrExLab
+#    getAllEmrExLabs: [EmrExLab]
+#}

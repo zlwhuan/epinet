@@ -18,7 +18,7 @@ type EdrPersonalStatus {
     updateTime: String
 }
 
-extend type Query {
-    getEdrPersonalStatuses: [EdrPersonalStatus]
-    getEdrPersonalStatusById(id: ID!): EdrPersonalStatus
-}
+#extend type Query {
+#    getEdrPersonalStatuses: [EdrPersonalStatus]
+#    getEdrPersonalStatusById(id: ID!): EdrPersonalStatus
+#}

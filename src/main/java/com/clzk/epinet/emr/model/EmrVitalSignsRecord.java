@@ -18,7 +18,7 @@ public class EmrVitalSignsRecord extends BaseEntity {
 
     /** 患者基本信息ID */
     @Column(name = "patient_id")
-    private String patientId;
+    private Long patientId;
 
     /** 就诊记录类型代码 */
     @Column(name = "activity_type_code")

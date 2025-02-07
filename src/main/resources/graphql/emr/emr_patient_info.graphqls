@@ -2,7 +2,7 @@ type EmrPatientInfo {
     """ID"""
     id: ID!
     """患者 ID"""
-    patientId: String
+    patientId: ID
     """患者姓名"""
     patientName: String!
     """身份证件类别代码"""

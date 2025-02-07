@@ -23,10 +23,10 @@ type EdrLaboratoryTestingInfo {
     createTime: String
     updateUser: String
     updateTime: String
-    patientId: String
+    patientId: ID
 }
 
-extend type Query {
-    getEdrLaboratoryTestingInfos: [EdrLaboratoryTestingInfo]
-    getEdrLaboratoryTestingInfoById(id: ID!): EdrLaboratoryTestingInfo
-}
+#extend type Query {
+#    getEdrLaboratoryTestingInfos: [EdrLaboratoryTestingInfo]
+#    getEdrLaboratoryTestingInfoById(id: ID!): EdrLaboratoryTestingInfo
+#}

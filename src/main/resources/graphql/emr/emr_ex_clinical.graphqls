@@ -3,7 +3,7 @@
 # 实体定义
 type EmrExClinical {
     id: ID!
-    patientId: String # 患者ID
+    patientId: ID # 患者ID
     activityTypeCode: String # 诊疗活动类型代码
     activityTypeName: String # 诊疗活动类型名称
     serialNumber: String # 就诊流水号
@@ -39,10 +39,11 @@ type EmrExClinical {
     deptName: String # 申请科室名称
     operatorId: String # 操作人ID
     operationTime: String # 操作时间
+    exClinicalItemList: [EmrExClinicalItem]
 }
 
 # 扩展查询定义
-extend type Query {
-    getEmrExClinical(id: ID!): EmrExClinical
-    getAllEmrExClinicals: [EmrExClinical]
-}
+#extend type Query {
+#    getEmrExClinical(id: ID!): EmrExClinical
+#    getAllEmrExClinicals: [EmrExClinical]
+#}

@@ -1,6 +1,6 @@
 type EmrOrder {
     id: ID!
-    patientId: String
+    patientId: ID
     activityTypeCode: String
     activityTypeName: String
     serialNumber: String
@@ -22,9 +22,10 @@ type EmrOrder {
     deptName: String
     operatorId: String
     operationTime: String
+    orderItemList: [EmrOrderItem]
 }
 
-extend type Query {
-    getEmrOrders: [EmrOrder]
-    getEmrOrderById(id: ID!): EmrOrder
-}
+#extend type Query {
+#    getEmrOrders: [EmrOrder]
+#    getEmrOrderById(id: ID!): EmrOrder
+#}

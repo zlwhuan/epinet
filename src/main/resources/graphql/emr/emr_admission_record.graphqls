@@ -3,7 +3,7 @@
 # 实体定义
 type EmrAdmissionRecord {
     id: ID!
-    patientId: String # 患者 ID
+    patientId: ID # 患者 ID
     serialNumber: String # 住院号
     patientName: String # 患者姓名
     idCardTypeCode: String # 身份证件类别代码
@@ -51,7 +51,7 @@ type EmrAdmissionRecord {
 }
 
 # 查询定义
-extend type Query {
-    getEmrAdmissionRecord(id: ID!): EmrAdmissionRecord
-    getAllEmrAdmissionRecords: [EmrAdmissionRecord]
-}
+#extend type Query {
+#    getEmrAdmissionRecord(id: ID!): EmrAdmissionRecord
+#    getAllEmrAdmissionRecords: [EmrAdmissionRecord]
+#}

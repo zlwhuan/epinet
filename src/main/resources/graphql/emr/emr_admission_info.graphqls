@@ -3,7 +3,7 @@
 # 实体定义
 type EmrAdmissionInfo {
     id: ID!
-    patientId: String
+    patientId: ID
     serialNumber: String
     wardName: String
     wardNo: String
@@ -69,7 +69,7 @@ type EmrAdmissionInfo {
 }
 
 # 查询定义
-extend type Query {
-    getEmrAdmissionInfo(id: ID!): EmrAdmissionInfo
-    getAllEmrAdmissionInfos: [EmrAdmissionInfo]
-}
+#extend type Query {
+#    getEmrAdmissionInfo(id: ID!): EmrAdmissionInfo
+#    getAllEmrAdmissionInfos: [EmrAdmissionInfo]
+#}

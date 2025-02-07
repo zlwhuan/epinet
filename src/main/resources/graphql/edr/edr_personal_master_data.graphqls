@@ -25,7 +25,7 @@ type EdrPersonalMasterData {
     updateTime: String
 }
 
-extend type Query {
-    getEdrPersonalMasterDatas: [EdrPersonalMasterData]
-    getEdrPersonalMasterDataById(id: ID!): EdrPersonalMasterData
-}
+#extend type Query {
+#    getEdrPersonalMasterDatas: [EdrPersonalMasterData]
+#    getEdrPersonalMasterDataById(id: ID!): EdrPersonalMasterData
+#}

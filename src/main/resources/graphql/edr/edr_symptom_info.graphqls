@@ -11,10 +11,10 @@ type EdrSymptomInfo {
     createTime: String
     updateUser: String
     updateTime: String
-    patientId: String
+    patientId: ID
 }
 
-extend type Query {
-    getEdrSymptomInfos: [EdrSymptomInfo]
-    getEdrSymptomInfoById(id: ID!): EdrSymptomInfo
-}
+#extend type Query {
+#    getEdrSymptomInfos: [EdrSymptomInfo]
+#    getEdrSymptomInfoById(id: ID!): EdrSymptomInfo
+#}

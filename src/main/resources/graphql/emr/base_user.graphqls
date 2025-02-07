@@ -16,7 +16,7 @@ type BaseUser {
 }
 
 # 查询定义
-extend type Query {
-    getBaseUser(id: ID!): BaseUser
-    getAllBaseUsers: [BaseUser]
-}
+#extend type Query {
+#    getBaseUser(id: ID!): BaseUser
+#    getAllBaseUsers: [BaseUser]
+#}

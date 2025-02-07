@@ -21,7 +21,7 @@ public class EmrExClinicalItem extends BaseEntity {
 
     /** 检查报告 ID */
     @Column(name = "ex_clinical_id")
-    private String exClinicalId;
+    private Long exClinicalId;
 
     /** 检查项目代码 */
     @Column(name = "item_code")

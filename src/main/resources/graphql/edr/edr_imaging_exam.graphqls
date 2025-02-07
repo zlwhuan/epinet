@@ -13,10 +13,10 @@ type EdrImagingExaminationInfo {
     createTime: String
     updateUser: String
     updateTime: String
-    patientId: String
+    patientId: ID
 }
 
-extend type Query {
-    getEdrImagingExaminationInfos: [EdrImagingExaminationInfo]
-    getEdrImagingExaminationInfoById(id: ID!): EdrImagingExaminationInfo
-}
+#extend type Query {
+#    getEdrImagingExaminationInfos: [EdrImagingExaminationInfo]
+#    getEdrImagingExaminationInfoById(id: ID!): EdrImagingExaminationInfo
+#}

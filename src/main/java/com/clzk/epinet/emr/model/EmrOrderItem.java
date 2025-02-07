@@ -23,7 +23,7 @@ public class EmrOrderItem extends BaseEntity {
      * 医嘱处方 ID
      */
     @Column(name = "order_id", nullable = false)
-    private String orderId;
+    private Long orderId;
 
     /**
      * 药物代码

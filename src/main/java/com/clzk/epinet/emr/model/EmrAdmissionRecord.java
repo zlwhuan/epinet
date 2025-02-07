@@ -15,7 +15,7 @@ import lombok.Data;
 @EqualsAndHashCode(callSuper = true)
 public class EmrAdmissionRecord extends BaseEntity {
 
-    private String patientId; // 患者 ID
+    private Long patientId; // 患者 ID
     private String serialNumber; // 住院号
     private String patientName; // 患者姓名
     private String idCardTypeCode; // 身份证件类别代码
