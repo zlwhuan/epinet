@@ -12,8 +12,8 @@ type EmrOrderItem {
     tcmNumber: Int
     tcmDecoctionMethod: String
     tcmUseMethod: String
-    operatorId: String!
-    operationTime: String
+#    operatorId: String!
+#    operationTime: String
 }
 
 #extend type Query {

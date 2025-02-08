@@ -12,7 +12,7 @@ import lombok.Data;
 @Table(name = "edr_travel_history_info")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class EdrTravelHistoryInfo extends BaseEntity {
+public class EdrTravelHistory extends BaseEntity {
     private String mpiId;                   // 主索引 ID
     private String foreignTypeCode;        // 输入病例类型代码（0.否 1.是）
     private String placeCode;               // 输入来源地代码（国家和地区代码）

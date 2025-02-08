@@ -1,21 +1,4 @@
 type Query {
-    getPatientInfo(idCard: String!): [EmrPatientInfo]
-#    getActivityList(patientId: ID!): [EmrActivityInfo]
-#    getAdmissionList(patientId: ID!): [EmrAdmissionInfo]
-#    getAdmissionRecordList(patientId: ID!): [EmrAdmissionRecord]
-#    getDailyCourseList(patientId: ID!): [EmrDailyCourse]
-#    getDeathList(patientId: ID!): [EmrDeathInfo]
-#    getDischargeList(patientId: ID!): [EmrDischargeInfo]
-#    getExClinicalList(patientId: ID!): [EmrExClinical]
-#    getExLabList(patientId: ID!): [EmrExLab]
-#    getFirstCourseList(patientId: ID!): [EmrFirstCourse]
-#    getInfReportList(patientId: ID!): [EmrInfReport]
-#    getOrderList(patientId: ID!): [EmrOrder]
-#    getOutpatientObsList(patientId: ID!): [EmrOutpatientObs]
-#    getOutpatientRecordList(patientId: ID!): [EmrOutpatientRecord]
-#    getVitalSignsRecordList(patientId: ID!): [EmrVitalSignsRecord]
-#
-#    getExClinicalItemList(exClinicalId: ID!): [EmrExClinicalItem]
-#    getExLabItemList(exLabId: ID!): [EmrExLabItem]
-#    getOrderItemList(orderId: ID!): [EmrOrderItem]
+    getEmrPatientInfo(idCard: String!): [EmrPatientInfo]
+    getEdrPatientInfo(idCard: String!): [EdrPersonalMasterData]
 }

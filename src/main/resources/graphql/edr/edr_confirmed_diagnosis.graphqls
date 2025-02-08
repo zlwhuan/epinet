@@ -1,4 +1,4 @@
-type EdrConfirmedDiagnosisInfo {
+type EdrConfirmedDiagnosis {
     id: ID!
     mpiId: String
     visitTypeCode: String
@@ -10,21 +10,21 @@ type EdrConfirmedDiagnosisInfo {
     caseTypeCode: String
     ncvSeverityCode: String
     diagnosisOrgCode: String
-    deptCode: String
+#    deptCode: String
     statisticsFlagCode: String
     syndromeCode: String
     iliCode: String
     opflag: String
-    createOrg: String
-    updateOrg: String
-    createUser: String
-    createTime: String
-    updateUser: String
-    updateTime: String
+#    createOrg: String
+#    updateOrg: String
+#    createUser: String
+#    createTime: String
+#    updateUser: String
+#    updateTime: String
     patientId: ID
 }
 
 #extend type Query {
-#    getEdrConfirmedDiagnosisInfos: [EdrConfirmedDiagnosisInfo]
-#    getEdrConfirmedDiagnosisInfoById(id: ID!): EdrConfirmedDiagnosisInfo
+#    getEdrConfirmedDiagnosiss: [EdrConfirmedDiagnosis]
+#    getEdrConfirmedDiagnosisById(id: ID!): EdrConfirmedDiagnosis
 #}

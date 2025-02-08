@@ -1,20 +1,20 @@
-type EdrExaminationInfo {
+type EdrExamination {
     id: ID!
     mpiId: String
     activityTime: String
     timestamp: String
     examinationItemCode: String
     examinationResultCode: String
-    createOrg: String
-    updateOrg: String
-    createUser: String
-    createTime: String
-    updateUser: String
-    updateTime: String
+#    createOrg: String
+#    updateOrg: String
+#    createUser: String
+#    createTime: String
+#    updateUser: String
+#    updateTime: String
     patientId: ID
 }
 
 #extend type Query {
-#    getEdrExaminationInfos: [EdrExaminationInfo]
-#    getEdrExaminationInfoById(id: ID!): EdrExaminationInfo
+#    getEdrExaminations: [EdrExamination]
+#    getEdrExaminationById(id: ID!): EdrExamination
 #}

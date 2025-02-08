@@ -16,8 +16,8 @@ import java.util.List;
 public class EmrPatientResolver {
 
     @QueryMapping
-    public List<EmrPatientInfo> getPatientInfo(@Argument String idCard) {
-        return patientRepository.findEmrPatientInfoByIdCard(idCard);
+    public List<EmrPatientInfo> getEmrPatientInfo(@Argument String idCard) {
+        return patientRepository.findAllByIdCard(idCard);
     }
 
     @SchemaMapping(typeName = "EmrPatientInfo", field = "activityList")

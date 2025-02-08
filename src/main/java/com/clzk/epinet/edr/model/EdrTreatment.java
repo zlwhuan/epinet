@@ -14,7 +14,7 @@ import lombok.Data;
 @Table(name = "edr_treatment_info")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class EdrTreatmentInfo extends BaseEntity {
+public class EdrTreatment extends BaseEntity {
     private String mpiId;                       // 主索引 ID
     private String treatmentTypeCode;          // 治疗类型代码
     private String registrationNo;             // 登记号/治疗号

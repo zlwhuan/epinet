@@ -7,7 +7,7 @@ type EmrExLab {
     activityTypeCode: String # 就诊记录类型代码
     activityTypeName: String # 就诊记录类型名称
     serialNumber: String # 就诊流水号
-    patientName: String # 患者姓名
+#    patientName: String # 患者姓名
     idCardTypeCode: String # 身份证件类别代码
     idCardTypeName: String # 身份证件类别名称
     idCard: String # 身份证件号码
@@ -33,12 +33,12 @@ type EmrExLab {
     examinationNotes: String # 检验报告备注
     examinationReportDate: String # 检验报告日期
     examinationReportId: String # 报告医师
-    orgCode: String # 检验报告机构编码
-    orgName: String # 检验报告机构名称
-    deptCode: String # 检验报告科室代码
-    deptName: String # 检验报告科室名称
-    operatorId: String # 操作人 ID
-    operationTime: String # 操作时间
+#    orgCode: String # 检验报告机构编码
+#    orgName: String # 检验报告机构名称
+#    deptCode: String # 检验报告科室代码
+#    deptName: String # 检验报告科室名称
+#    operatorId: String # 操作人 ID
+#    operationTime: String # 操作时间
     exLabItemList: [EmrExLabItem] # 检验项目明细列表
 }
 

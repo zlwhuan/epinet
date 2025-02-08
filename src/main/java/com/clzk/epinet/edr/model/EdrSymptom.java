@@ -13,7 +13,7 @@ import lombok.Data;
 @Table(name = "edr_symptom_info")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class EdrSymptomInfo extends BaseEntity {
+public class EdrSymptom extends BaseEntity {
     private String mpiId;                 // 主索引 ID
     private String activityTime;          // 就诊日期时间
     private String currentAddrCode;      // 患者现住址

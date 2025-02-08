@@ -13,7 +13,7 @@ import lombok.Data;
 @Table(name = "edr_death_info")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class EdrDeathInfo extends BaseEntity {
+public class EdrDeath extends BaseEntity {
     private String mpiId;                  // 主索引 ID
     private String deadDate;               // 死亡日期时间
     private String directCauseCode;       // 直接死亡原因编码（ICD10 代码）

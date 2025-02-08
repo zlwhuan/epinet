@@ -3,8 +3,8 @@
 # 实体定义
 type BaseDept {
     id: ID!
-    deptCode: String!
-    deptName: String!
+#    deptCode: String!
+#    deptName: String!
     targetDeptCode: String
     targetDeptName: String
     createTime: String

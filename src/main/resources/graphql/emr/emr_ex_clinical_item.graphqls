@@ -10,8 +10,8 @@ type EmrExClinicalItem {
     examinationResultName: String # 检查结果名称
     examinationQuantification: String # 检查定量结果
     examinationQuantificationUnit: String # 检查定量结果计量单位
-    operatorId: String # 操作人 ID
-    operationTime: String # 操作时间
+#    operatorId: String # 操作人 ID
+#    operationTime: String # 操作时间
 }
 
 # 扩展查询定义

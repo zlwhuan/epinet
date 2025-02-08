@@ -4,7 +4,7 @@ type EmrOrder {
     activityTypeCode: String
     activityTypeName: String
     serialNumber: String
-    patientName: String
+#    patientName: String
     idCardTypeCode: String
     idCardTypeName: String
     idCard: String
@@ -16,12 +16,12 @@ type EmrOrder {
     prescriptionIssuanceId: String
     prescriptionDispensingId: String
     prescriptionNotes: String
-    orgCode: String
-    orgName: String
-    deptCode: String
-    deptName: String
-    operatorId: String
-    operationTime: String
+#    orgCode: String
+#    orgName: String
+#    deptCode: String
+#    deptName: String
+#    operatorId: String
+#    operationTime: String
     orderItemList: [EmrOrderItem]
 }
 

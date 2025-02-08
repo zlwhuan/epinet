@@ -7,7 +7,7 @@ type EmrExClinical {
     activityTypeCode: String # 诊疗活动类型代码
     activityTypeName: String # 诊疗活动类型名称
     serialNumber: String # 就诊流水号
-    patientName: String # 患者姓名
+#    patientName: String # 患者姓名
     idCardTypeCode: String # 证件类别代码
     idCardTypeName: String # 证件类别名称
     idCard: String # 证件号码
@@ -33,12 +33,12 @@ type EmrExClinical {
     examinationReportDate: String # 检查报告日期
     examinationReportId: String # 检查报告ID
     chiefComplaint: String # 主诉
-    orgCode: String # 医疗机构代码
-    orgName: String # 医疗机构名称
-    deptCode: String # 申请科室代码
-    deptName: String # 申请科室名称
-    operatorId: String # 操作人ID
-    operationTime: String # 操作时间
+#    orgCode: String # 医疗机构代码
+#    orgName: String # 医疗机构名称
+#    deptCode: String # 申请科室代码
+#    deptName: String # 申请科室名称
+#    operatorId: String # 操作人ID
+#    operationTime: String # 操作时间
     exClinicalItemList: [EmrExClinicalItem]
 }
 

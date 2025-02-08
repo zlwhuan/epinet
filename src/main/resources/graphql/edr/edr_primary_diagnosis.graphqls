@@ -4,13 +4,13 @@ type EdrPrimaryDiagnosis {
     activityTime: String
     currentAddrCode: String
     initialDiagnosisCode: String
-    orgCode: String
-    createOrg: String
-    updateOrg: String
-    createUser: String
-    createTime: String
-    updateUser: String
-    updateTime: String
+#    orgCode: String
+#    createOrg: String
+#    updateOrg: String
+#    createUser: String
+#    createTime: String
+#    updateUser: String
+#    updateTime: String
     patientId: ID
 }
 

@@ -13,7 +13,7 @@ import lombok.Data;
 @Table(name = "edr_medication_info")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class EdrMedicationInfo extends BaseEntity {
+public class EdrMedication extends BaseEntity {
 
     private String mpiId;                   // 主索引 ID
     private String drugCode;                // 通用药物代码

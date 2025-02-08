@@ -5,7 +5,7 @@ type EmrDailyCourse {
     id: ID!
     patientId: ID # 患者 ID
     serialNumber: String # 住院号
-    patientName: String # 患者姓名
+#    patientName: String # 患者姓名
     idCardTypeCode: String # 身份证件类别代码
     idCardTypeName: String # 身份证件类别名称
     idCard: String # 身份证件号码
@@ -19,12 +19,12 @@ type EmrDailyCourse {
     treatment: String # 辨证论治详细描述
     diseaseProgressionCode: String # 病情转归代码
     diseaseProgressionName: String # 病情转归名称
-    orgCode: String # 医疗机构代码
-    orgName: String # 医疗机构名称
-    deptCode: String # 科室代码
-    deptName: String # 科室名称
-    operatorId: String # 操作人 ID
-    operationTime: String # 操作时间
+#    orgCode: String # 医疗机构代码
+#    orgName: String # 医疗机构名称
+#    deptCode: String # 科室代码
+#    deptName: String # 科室名称
+#    operatorId: String # 操作人 ID
+#    operationTime: String # 操作时间
 }
 
 # 查询定义

@@ -13,7 +13,7 @@ import lombok.Data;
 @Table(name = "edr_hospitalization_info")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class EdrHospitalizationInfo extends BaseEntity {
+public class EdrHospitalization extends BaseEntity {
     private String mpiId;                       // 主索引 ID
     private String admissionDate;               // 入院日期
     private String dischargeDate;               // 出院日期

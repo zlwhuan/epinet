@@ -1,4 +1,4 @@
-type EdrExposureHistoryInfo {
+type EdrExposureHistory {
     id: ID!
     mpiId: String
     contactflagCode: String
@@ -10,16 +10,16 @@ type EdrExposureHistoryInfo {
     contactObjectCode: String
     contactTime: String
     discoveryModeCode: String
-    createOrg: String
-    updateOrg: String
-    createUser: String
-    createTime: String
-    updateUser: String
-    updateTime: String
+#    createOrg: String
+#    updateOrg: String
+#    createUser: String
+#    createTime: String
+#    updateUser: String
+#    updateTime: String
     patientId: ID
 }
 
 #extend type Query {
-#    getEdrExposureHistoryInfos: [EdrExposureHistoryInfo]
-#    getEdrExposureHistoryInfoById(id: ID!): EdrExposureHistoryInfo
+#    getEdrExposureHistorys: [EdrExposureHistory]
+#    getEdrExposureHistoryById(id: ID!): EdrExposureHistory
 #}

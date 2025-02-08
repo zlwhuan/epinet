@@ -13,7 +13,7 @@ import lombok.Data;
 @Table(name = "edr_exposure_history_info")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class EdrExposureHistoryInfo extends BaseEntity {
+public class EdrExposureHistory extends BaseEntity {
 
     private String mpiId;                 // 主索引 ID
     private String contactflagCode;       // 密切接触者有无同症状代码

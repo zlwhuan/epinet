@@ -2,7 +2,7 @@ type EmrOutpatientRecord {
     id: ID!
     patientId: ID
     serialNumber: String
-    patientName: String
+#    patientName: String
     idCardTypeCode: String
     idCardTypeName: String
     idCard: String
@@ -32,12 +32,12 @@ type EmrOutpatientRecord {
     tcmInitalSyndromeName: String
     differentiationBasis: String
     treatment: String
-    deptCode: String
-    deptName: String
-    orgCode: String
-    orgName: String
-    operatorId: String
-    operationTime: String
+#    deptCode: String
+#    deptName: String
+#    orgCode: String
+#    orgName: String
+#    operatorId: String
+#    operationTime: String
 }
 
 #extend type Query {

@@ -13,7 +13,7 @@ import lombok.Data;
 @Table(name = "edr_physical_exam")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class EdrExaminationInfo extends BaseEntity {
+public class EdrExamination extends BaseEntity {
 
     private String mpiId;                   // 主索引 ID
     private String activityTime;            // 就诊日期时间

@@ -17,12 +17,26 @@ type EdrPersonalMasterData {
     contacts: String
     tempIdCard: String
     formerName: String
-    createOrg: String
-    updateOrg: String
-    createUser: String
-    createTime: String
-    updateUser: String
-    updateTime: String
+#    createOrg: String
+#    updateOrg: String
+#    createUser: String
+#    createTime: String
+#    updateUser: String
+#    updateTime: String
+
+    confirmedDiagnosisList: [EdrConfirmedDiagnosis]
+    deathList: [EdrDeath]
+    examinationList: [EdrExamination]
+    exposureHistoryList: [EdrExposureHistory]
+    hospitalizationList: [EdrHospitalization]
+    imagingExaminationList: [EdrImagingExamination]
+    laboratoryTestingList: [EdrLaboratoryTesting]
+    medicationList: [EdrMedication]
+    personalStatusList: [EdrPersonalStatus]
+    primaryDiagnosisList: [EdrPrimaryDiagnosis]
+    symptomList: [EdrSymptom]
+    treatmentList: [EdrTreatment]
+    travelHistoryList: [EdrTravelHistory]
 }
 
 #extend type Query {

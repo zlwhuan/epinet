@@ -55,14 +55,14 @@ type EmrPatientInfo {
     contacts: String
     """联系人电话"""
     contactsTel: String
-    """医疗机构代码"""
-    orgCode: String
-    """医疗机构名称"""
-    orgName: String
-    """操作人 ID"""
-    operatorId: String
-    """操作时间"""
-    operationTime: String
+#    """医疗机构代码"""
+#    orgCode: String
+#    """医疗机构名称"""
+#    orgName: String
+#    """操作人 ID"""
+#    operatorId: String
+#    """操作时间"""
+#    operationTime: String
     """诊疗活动列表"""
     activityList: [EmrActivityInfo]
     """患者入院记录信息"""

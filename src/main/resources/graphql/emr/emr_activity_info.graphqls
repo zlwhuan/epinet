@@ -10,8 +10,8 @@ type EmrActivityInfo{
     serialNumber: String
     """诊疗活动发生日期时间"""
     activityTime: String
-    """患者姓名"""
-    patientName: String
+#    """患者姓名"""
+#    patientName: String
     """身份证件类别代码"""
     idCardTypeCode: String
     """身份证件类别名称"""
@@ -46,18 +46,18 @@ type EmrActivityInfo{
     tcmSyndromeName: String
     """诊断医生"""
     fillDoctor: String
-    """科室代码"""
-    deptCode: String
-    """科室名称"""
-    deptName: String
-    """医疗机构代码"""
-    orgCode: String
-    """医疗机构名称"""
-    orgName: String
-    """操作人 ID"""
-    operatorId: String
-    """操作时间"""
-    operationTime: String
+#    """科室代码"""
+#    deptCode: String
+#    """科室名称"""
+#    deptName: String
+#    """医疗机构代码"""
+#    orgCode: String
+#    """医疗机构名称"""
+#    orgName: String
+#    """操作人 ID"""
+#    operatorId: String
+#    """操作时间"""
+#    operationTime: String
 #    """患者信息"""
 #    patientInfo: EmrPatientInfo
 }

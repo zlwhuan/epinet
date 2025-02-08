@@ -1,4 +1,4 @@
-type EdrTreatmentInfo {
+type EdrTreatment {
     id: ID!
     mpiId: String
     treatmentTypeCode: String
@@ -10,16 +10,16 @@ type EdrTreatmentInfo {
     nonTreatmentReasonCode: String
     recoveryDays: String
     treatmentCategoryCode: String
-    createOrg: String
-    updateOrg: String
-    createUser: String
-    createTime: String
-    updateUser: String
-    updateTime: String
+#    createOrg: String
+#    updateOrg: String
+#    createUser: String
+#    createTime: String
+#    updateUser: String
+#    updateTime: String
     patientId: ID
 }
 
 #extend type Query {
-#    getEdrTreatmentInfos: [EdrTreatmentInfo]
-#    getEdrTreatmentInfoById(id: ID!): EdrTreatmentInfo
+#    getEdrTreatments: [EdrTreatment]
+#    getEdrTreatmentById(id: ID!): EdrTreatment
 #}

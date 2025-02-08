@@ -13,7 +13,7 @@ import lombok.Data;
 @Table(name = "edr_laboratory_testing_info")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class EdrLaboratoryTestingInfo extends BaseEntity {
+public class EdrLaboratoryTesting extends BaseEntity {
     private String mpiId;                          // 主索引 ID
     private String examinationItemCode;          // 检验项目代码
     private String specimenNo;                    // 检验标本号

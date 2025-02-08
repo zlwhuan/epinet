@@ -10,12 +10,12 @@ type EdrPersonalStatus {
     flowStatusCode: String
     riskRatingCode: String
     screeningStatusCode: String
-    createOrg: String
-    updateOrg: String
-    createUser: String
-    createTime: String
-    updateUser: String
-    updateTime: String
+#    createOrg: String
+#    updateOrg: String
+#    createUser: String
+#    createTime: String
+#    updateUser: String
+#    updateTime: String
 }
 
 #extend type Query {

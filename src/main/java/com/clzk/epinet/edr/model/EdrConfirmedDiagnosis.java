@@ -13,7 +13,7 @@ import lombok.Data;
 @Table(name = "edr_confirmed_diagnosis")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class EdrConfirmedDiagnosisInfo extends BaseEntity {
+public class EdrConfirmedDiagnosis extends BaseEntity {
     private String mpiId;                         // 主索引 ID
     private String visitTypeCode;                // 首复诊类型
     private String diagnoseClassificationCode;   // 诊断类别代码

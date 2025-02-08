@@ -7,7 +7,7 @@ type EmrInfReport {
     serialNumber: String # 就诊流水号
     activityTypeCode: String # 诊疗活动类型代码
     activityTypeName: String # 诊疗活动类型名称
-    patientName: String # 患者姓名
+#    patientName: String # 患者姓名
     idCardTypeCode: String # 身份证件类别代码
     idCardTypeName: String # 身份证件类别名称
     idCard: String # 身份证件号码
@@ -110,10 +110,10 @@ type EmrInfReport {
     reportZoneName: String # 报告地区名称
     reportOrgCode: String # 报告单位机构代码
     reportOrgName: String # 报告单位机构名称
-    deptCode: String # 科室代码
-    deptName: String # 科室名称
-    operatorId: String # 操作人 ID
-    operationTime: String # 操作时间
+#    deptCode: String # 科室代码
+#    deptName: String # 科室名称
+#    operatorId: String # 操作人 ID
+#    operationTime: String # 操作时间
 }
 
 # 扩展查询定义

@@ -3,8 +3,8 @@
 # 实体定义
 type BaseUser {
     id: ID!
-    orgCode: String!
-    deptCode: String!
+#    orgCode: String!
+#    deptCode: String!
     userName: String!
     idCardTypeCode: String
     idCard: String

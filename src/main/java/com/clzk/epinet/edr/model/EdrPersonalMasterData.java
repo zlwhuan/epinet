@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 个人主数据信息
  * 记录个人基本信息，包括姓名、身份证号、性别、出生日期等。
@@ -38,5 +40,33 @@ public class EdrPersonalMasterData extends BaseEntity {
     private String createTime;            // 创建时间
     private String updateUser;            // 修改人
     private String updateTime;            // 修改时间
+
+    @Transient
+    private List<EdrConfirmedDiagnosis> confirmedDiagnosisList; // 确诊结果信息
+    @Transient
+    private List<EdrDeath> deathList; // 死亡信息
+    @Transient
+    private List<EdrExamination> examinationList; // 检查信息
+    @Transient
+    private List<EdrExposureHistory> exposureHistoryList; // 暴露史信息
+    @Transient
+    private List<EdrHospitalization> hospitalizationList; // 住院信息
+    @Transient
+    private List<EdrImagingExamination> imagingExaminationList; // 影像检查信息
+    @Transient
+    private List<EdrLaboratoryTesting> laboratoryTestingList; // 实验室检测信息
+    @Transient
+    private List<EdrMedication> medicationList; // 用药信息
+    @Transient
+    private List<EdrPersonalStatus> personalStatusList; // 个人状态信息
+    @Transient
+    private List<EdrPrimaryDiagnosis> primaryDiagnosisList; // 初步诊断信息
+    @Transient
+    private List<EdrSymptom> symptomList; // 症状信息
+    @Transient
+    private List<EdrTreatment> treatmentList; // 治疗信息
+    @Transient
+    private List<EdrTravelHistory> travelHistoryList; // 出行史信息
+
 
 }
