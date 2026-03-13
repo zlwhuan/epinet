@@ -1,0 +1,36 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource-view: # 生产用 Oracle，必须用 jdbc-url
+    jdbc-url: jdbc:oracle:thin:@192.168.13.41:1521/JCGW?oracle.jdbc.timezoneAsRegion=false
+    username: crbsb
+    password: crbsb
+    driver-class-name: oracle.jdbc.OracleDriver
+
+  # 可选：生产 hikari 调优
+  datasource-view.hikari: # 注意前缀 datasource-view.hikari
+    maximum-pool-size: 15
+    minimum-idle: 5
+    idle-timeout: 300000
+    connection-timeout: 20000
+    max-lifetime: 1800000
+    validation-timeout: 5000
+
+  jackson:
+    time-zone: Asia/Shanghai
+
+  jpa:
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: Asia/Shanghai
+
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: ERROR
+    org.hibernate.orm.jdbc.bind: WARN   # Hibernate 6+ 显示绑定参数的详细日志

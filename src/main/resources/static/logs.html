@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>接口调用日志查看</title>
+
+  <link rel="stylesheet" href="index.css">
+  <script src="vue.global.js"></script>
+  <script src="axios.min.js"></script>
+  <script src="index.full.js"></script>
+  <script src="index.iife.min.js"></script>
+  <script src="zh-cn.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #f5f7fa;
+    }
+
+    .container {
+      padding: 20px;
+      background: #fff;
+      /* min-height: 100vh; */
+    }
+
+    .header {
+      padding: 16px 20px;
+      border-bottom: 1px solid #ebeef5;
+      background: #fafafa;
+      margin-bottom: 20px;
+    }
+
+    .search-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 20px;
+      margin-top: 20px;
+    }
+
+    .search-bar .el-input,
+    .search-bar .el-select,
+    .search-bar .el-date-editor {
+      min-width: 200px;
+      /* 避免太窄导致日期选择器挤压 */
+      max-width: 260px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: nowrap;
+    }
+
+    /* 让日期选择器在小屏幕上也能正常显示 */
+    @media (max-width: 768px) {
+      .search-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .search-bar>* {
+        width: 100% !important;
+      }
+
+      .button-group {
+        flex-direction: row;
+        justify-content: flex-start;
+      }
+    }
+
+
+    .pagination-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .status-success {
+      color: #67c23a;
+    }
+
+    .status-failed {
+      color: #f56c6c;
+    }
+
+    /* 如果还是有弹出层定位问题，可以强制 popper z-index */
+    .el-popper {
+      z-index: 9999 !important;
+    }
+
+    .date-picker-wrapper {
+      width: 360px;
+      /* 推荐 340~380px，根据你的布局微调 */
+      min-width: 340px;
+      max-width: 400px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" class="container">
+    <!-- 标题区域 -->
+    <div style="padding: 16px 20px; border-bottom:1px solid #ebeef5; background:#fafafa;">
+      <div style="display:flex; align-items:center; justify-content:space-between;">
+        <h3 style="margin: 0; color: #303133;">接口调用日志查看</h3>
+      </div>
+    </div>
+
+    <!-- 搜索条件 -->
+    <div class="search-bar">
+      <!-- 接口名称 -->
+      <el-select v-model="query.interfaceName" reserve-keyword clearable @clear="fetchLogs(1)" placeholder="输入编码或名称搜索"
+        style="width:100%">
+        <el-option v-for="item in standardOptions" :key="item.code" :label="`${item.code} - ${item.name}`"
+          :value="item.code">
+          <div style="display:flex; justify-content:space-between;">
+            <span>{{ item.code }}</span>
+            <span style="color:#909399; margin-left:12px;">{{ item.name }}</span>
+          </div>
+        </el-option>
+      </el-select>
+      <!-- <el-input v-model="query.interfaceName" placeholder="接口名称" clearable @clear="fetchLogs(1)">
+        <template #prefix>
+          <el-icon :size="16">
+            <Search />
+          </el-icon>
+        </template>
+      </el-input> -->
+
+      <!-- 请求参数 -->
+      <el-input v-model="query.requestParams" placeholder="请求参数" clearable @clear="fetchLogs(1)">
+        <template #prefix>
+          <el-icon :size="16">
+            <Search />
+          </el-icon>
+        </template>
+      </el-input>
+
+      <!-- 状态 -->
+      <el-select v-model="query.status" placeholder="状态" clearable style="width: 140px" @clear="fetchLogs(1)">
+        <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+      <div class="date-picker-wrapper" style="width: 360px;">
+        <el-date-picker v-model="query.dateRange" type="datetimerange" range-separator="至" start-placeholder="开始时间"
+          end-placeholder="结束时间" value-format="YYYY-MM-DDTHH:mm:ss" clearable :shortcuts="shortcuts" clearable
+          @clear="fetchLogs(1)" style="width: 100%; min-width: 340px;" />
+      </div>
+
+      <!-- 按钮区域 -->
+      <div class="button-group">
+        <el-button type="primary" @click="fetchLogs(1)">
+          <el-icon :size="16" style="margin-right: 5px;">
+            <Search />
+          </el-icon>
+          查询
+        </el-button>
+        <el-button @click="resetQuery">
+          <el-icon :size="16" style="margin-right: 5px;">
+            <Refresh />
+          </el-icon>
+          重置
+        </el-button>
+      </div>
+    </div>
+
+    <!-- 表格 -->
+    <el-table :data="tableData" stripe border style="width: 100%"
+      :header-cell-style="{ background: '#f5f7fa', color: '#606266' }">
+      <!-- <el-table-column prop="id" label="ID" width="80" align="center" /> -->
+      <el-table-column prop="interfaceName" label="接口名称" min-width="100">
+        <template #default="{ row }">
+          <span>{{ row.interfaceName || '-' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="requestTime" label="请求时间" min-width="100">
+        <template #default="{ row }">
+          <span>{{ row.requestTime || '-' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="responseTime" label="响应时间" min-width="100">
+        <template #default="{ row }">
+          <span>{{ row.responseTime || '-' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="requestParams" label="请求参数" min-width="300" show-overflow-tooltip>
+        <template #default="{ row }">
+          <span>{{ row.requestParams || '-' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="responseResult" label="响应结果" min-width="100" show-overflow-tooltip>
+        <template #default="{ row }">
+          <span>{{ row.responseResult || '-' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="status" label="状态" width="100" align="center">
+        <template #default="{ row }">
+          <span :class="row.status === 'success' ? 'status-success' : 'status-failed'">
+            {{ row.status === 'success' ? '成功' : '失败' }}
+          </span>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column prop="errorMessage" label="错误信息" width="180" show-overflow-tooltip>
+        <template #default="{ row }">
+          <span>{{ row.errorMessage || '-' }}</span>
+        </template>
+      </el-table-column> -->
+      <el-table-column prop="durationMs" label="耗时(ms)" width="100" align="center">
+        <template #default="{ row }">
+          <span>{{ row.durationMs || '-' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="100" align="center">
+        <template #default="{ row }">
+          <el-button type="primary" link size="small" @click="openDetail(row)">
+            详情
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <!-- 分页 -->
+    <div class="pagination-container" v-if="total > 0">
+      <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.size"
+        :page-sizes="[10, 20, 50, 100]" :total="total" layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange" @current-change="handlePageChange" />
+    </div>
+
+    <!-- 详情弹窗 -->
+    <el-dialog v-model="detailVisible" title="日志详情" width="70%" :close-on-click-modal="false">
+      <div style="line-height: 1.8;">
+        <p><strong>接口：</strong> {{ currentLog.interfaceName || '-' }}</p>
+        <p><strong>状态：</strong>
+          <el-tag :type="currentLog.status === 'success' ? 'success' : 'danger'">
+            {{ currentLog.status === 'success' ? '成功' : '失败' }}
+          </el-tag>
+        </p>
+        <p><strong>请求时间：</strong> {{ currentLog.requestTime || '-' }}</p>
+        <p><strong>耗时：</strong> {{ currentLog.durationMs }} ms</p>
+
+        <el-divider content-position="left">请求参数</el-divider>
+        <pre style="background:#f7f7f7; padding:12px; border-radius:4px; overflow:auto; max-height:200px;">
+{{ currentLog.requestParams || '无' }}</pre>
+
+        <el-divider content-position="left">响应内容</el-divider>
+        <pre style="background:#f7f7f7; padding:12px; border-radius:4px; overflow:auto; max-height:300px;">
+{{ currentLog.responseResult || '无' }}</pre>
+
+        <!-- <el-divider content-position="left">错误信息</el-divider>
+        <pre
+          style="background:#f7f7f7; padding:12px; border-radius:4px; overflow:auto; max-height:200px; color:#f56c6c;">
+{{ currentLog.errorMessage || '无' }}</pre> -->
+      </div>
+
+      <template #footer>
+        <el-button @click="detailVisible = false">关闭</el-button>
+      </template>
+    </el-dialog>
+  </div>
+
+  <script>
+    const { createApp, ref, onMounted } = Vue;
+    const app = createApp({
+      setup() {
+        const standardOptions = ref([]);
+
+        const loadStandardOptions = async () => {
+          try {
+            // 模拟或真实请求
+            const res = await axios.get('http://localhost:8080/logs/interface');
+            standardOptions.value = res.data;
+
+            // 加载完成后设置默认值
+            // if (standardOptions.value.length > 0) {
+            //   query.value.interfaceName = standardOptions.value[0].code; // 或 ''
+            // }
+
+          } catch (e) {
+            console.error('加载接口列表失败', e);
+          }
+        };
+        const statusOptions = ref([
+          { label: '成功', value: 'success' },
+          { label: '失败', value: 'failed' }
+        ]);
+        const shortcuts = ref([
+          {
+            text: '今天',
+            value: () => {
+              const end = new Date();
+              const start = new Date();
+              start.setHours(0, 0, 0, 0);
+              end.setHours(23, 59, 59, 999);
+              return [start, end];
+            }
+          },
+          {
+            text: '昨天',
+            value: () => {
+              const end = new Date();
+              end.setDate(end.getDate() - 1);
+              const start = new Date(end);
+              start.setHours(0, 0, 0, 0);
+              end.setHours(23, 59, 59, 999);
+              return [start, end];
+            }
+          },
+          {
+            text: '最近7天',
+            value: () => {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(end.getTime() - 3600 * 1000 * 24 * 7);
+              return [start, end];
+            }
+          }
+        ]);
+
+        const query = ref({
+          interfaceName: '',
+          requestParams: '',
+          status: '',
+          dateRange: [],
+        });
+
+        const tableData = ref([]);
+        const total = ref(0);
+        const pagination = ref({
+          page: 1,
+          size: 20
+        });
+
+        const detailVisible = ref(false);
+        const currentLog = ref({});
+
+        const fetchLogs = async (page = 1) => {
+          pagination.value.page = page;
+          const params = {
+            interfaceName: query.value?.interfaceName?.trim() || undefined,
+            requestParams: query.value?.requestParams?.trim() || undefined,
+            status: query.value?.status || undefined,
+            startTime: query.value?.dateRange?.[0] || undefined,
+            endTime: query.value?.dateRange?.[1] || undefined,
+            page: pagination.value.page - 1,   // 后端从0开始
+            size: pagination.value.size
+          };
+
+          try {
+            const res = await axios.post('http://localhost:8080/logs/query', params, {
+              headers: { 'Content-Type': 'application/json' }
+            });
+
+            const data = res.data;
+            tableData.value = data.content || [];
+            total.value = data.totalElements || 0;
+          } catch (err) {
+            console.error('查询失败', err);
+            ElementPlus.ElMessage.error('加载日志失败');
+          }
+        };
+
+        const resetQuery = () => {
+          query.value = { interfaceName: '', status: '', dateRange: [] };
+          fetchLogs(1);
+        };
+
+        const handleSizeChange = (val) => {
+          pagination.value.size = val;
+          fetchLogs(1);
+        };
+
+        const handlePageChange = (val) => {
+          fetchLogs(val);
+        };
+
+        const openDetail = (row) => {
+          currentLog.value = { ...row };
+          detailVisible.value = true;
+        };
+
+        onMounted(() => {
+          loadStandardOptions();
+          fetchLogs(1);
+        });
+
+        return {
+          query,
+          tableData,
+          total,
+          pagination,
+          detailVisible,
+          currentLog,
+          fetchLogs,
+          resetQuery,
+          handleSizeChange,
+          handlePageChange,
+          openDetail,
+          statusOptions,
+          shortcuts,
+          standardOptions
+        };
+      }
+    });
+
+    // 全局注册 Element Plus 图标
+    for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+      app.component(key, component);
+    }
+    // 关键：传入中文 locale
+    app.use(ElementPlus, {
+      locale: ElementPlusLocaleZhCn   // 注意：脚本引入后，这个全局变量会自动出现
+    });
+    app.mount('#app');
+  </script>
+</body>
+
+</html>

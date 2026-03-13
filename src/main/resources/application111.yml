@@ -1,0 +1,81 @@
+server:
+  port: 80
+spring:
+  application:
+    name: epinet
+  graphql:
+    schema:
+      inspection:
+        enabled: true
+    graphiql:
+      enabled: true
+    path: /graphql
+#      locations: classpath:/graphql/
+  datasource:
+    base:
+      jdbc-url: jdbc:mysql://localhost:3306/epi?useSSL=false&serverTimezone=UTC
+      username: root
+      password: Admin@123
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    view:
+      jdbc-url: jdbc:mysql://localhost:3306/epi?useSSL=false&serverTimezone=UTC
+      username: root
+      password: Admin@123
+      driver-class-name: com.mysql.cj.jdbc.Driver
+#    jdbc-url: jdbc:mysql://172.31.255.146:15400/datahub?useSSL=false&serverTimezone=UTC
+#    username: sinouser1
+#    password: my_root@123
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    driver-class-name: oracle.jdbc.OracleDriver   # 根据实际数据库改
+  jpa:
+#    hibernate:
+#      ddl-auto: update
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+api:
+  base-url: http://172.31.225.146:8881
+sync:
+  frequencies:
+    BaseUser: "0 0 * * * *" // 每小时同步一次
+    EmrPatientInfo: "0 */5 * * * *"
+    EmrActivityInfo: "0 * * * * *" // 每1分钟同步一次
+    EmrInfReport: "0 */5 * * * *"
+    EmrOutpatientRecord: "0 */5 * * * *"
+    EmrOutpatientObs: "0 */5 * * * *"
+    EmrAdmissionInfo: "0 */5 * * * *"
+    EmrFirstCourse: "0 */5 * * * *"
+    EmrDailyCourse: "0 */5 * * * *"
+    EmrAdmissionRecord: "0 */5 * * * *"
+    EmrDischargeInfo: "0 */5 * * * *"
+    EmrExClinical: "0 */5 * * * *"
+    EmrExClinicalItem: "0 */5 * * * *"
+    EmrExLab: "0 */5 * * * *"
+    EmrExLabItem: "0 */5 * * * *"
+    EmrOrder: "0 */5 * * * *"
+    EmrOrderItem: "0 */5 * * * *"
+    EmrDeathInfo: "0 */5 * * * *"
+    EmrVitalSignsRecord: "0 */5 * * * *"
+#graphql:
+#  servlet:
+#    enabled: true
+#    mapping: /graphql
+#    cors-enabled: true
+#  playground:
+#    enabled: true
+#  tools:
+#    schema-location-pattern: classpath*:graphql/**/*.graphqls
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        SQL: debug
+#        orm:
+#          jdbc:
+#            bind: trace
+
+
+

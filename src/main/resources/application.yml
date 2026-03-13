@@ -1,48 +1,52 @@
-
 spring:
-  application:
-    name: epinet
-  graphql:
-    schema:
-      inspection:
-        enabled: true
-    graphiql:
-      enabled: true
-    path: /graphql
-#      locations: classpath:/graphql/
-  datasource:
-    url: jdbc:mysql://localhost:3306/epi?useSSL=false&serverTimezone=UTC
+  profiles:
+    active: dev
+
+  # 主数据源（两个环境都一样，或 dev 用本地，prod 用公司内网 MySQL 等）
+  datasource-base:
+    jdbc-url: jdbc:mysql://localhost:3306/epi?useSSL=false&serverTimezone=UTC
     username: root
     password: Admin@123
     driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
+  datasource-view:
+    jdbc-url: jdbc:mysql://localhost:3306/epi?useSSL=false&serverTimezone=UTC
+    username: root
+    password: Admin@123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+# 其他公共配置...
+jpa:
+  show-sql: false
+  hibernate:
+    ddl-auto: none
+    naming:
+      physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
 api:
-  base-url: http://localhost:8080
-#graphql:
-#  servlet:
-#    enabled: true
-#    mapping: /graphql
-#    cors-enabled: true
-#  playground:
-#    enabled: true
-#  tools:
-#    schema-location-pattern: classpath*:graphql/**/*.graphqls
-#logging:
-#  level:
-#    org:
-#      hibernate:
-#        SQL: debug
-#        orm:
-#          jdbc:
-#            bind: trace
-server:
-  port: 80
+  base-url: http://10.201.8.162:8881
 
+sync:
+  frequencies:
+    BaseUser: "0 0 * * * *"
+    #    EmrPatientInfo: "0 */5 * * * *"
+    EmrActivityInfo: "0 * * * * *"
+#    EmrInfReport: "0 */5 * * * *"
+#    EmrOutpatientRecord: "0 */5 * * * *"
+#    EmrOutpatientObs: "0 */5 * * * *"
+#    EmrAdmissionInfo: "0 */5 * * * *"
+#    EmrFirstCourse: "0 */5 * * * *"
+#    EmrDailyCourse: "0 */5 * * * *"
+#    EmrAdmissionRecord: "0 */5 * * * *"
+#    EmrDischargeInfo: "0 */5 * * * *"
+#    EmrExClinical: "0 */5 * * * *"
+#    EmrExClinicalItem: "0 */5 * * * *"
+#    EmrExLab: "0 */5 * * * *"
+#    EmrExLabItem: "0 */5 * * * *"
+#    EmrOrder: "0 */5 * * * *"
+#    EmrOrderItem: "0 */5 * * * *"
+#    EmrDeathInfo: "0 */5 * * * *"
+#    EmrVitalSignsRecord: "0 */5 * * * *"
 
+logging:
+  level:
+    root: INFO

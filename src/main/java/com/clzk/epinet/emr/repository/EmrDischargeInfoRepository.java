@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface EmrDischargeInfoRepository  extends BaseRepository<EmrDischargeInfo> {
-    List<EmrDischargeInfo> findAllByPatientId(Long patientId);
+    List<EmrDischargeInfo> findAllByPatientId(String patientId);
 }

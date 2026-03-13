@@ -1,20 +1,18 @@
 package com.clzk.epinet.base.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @MappedSuperclass
 @Data
 public abstract class BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @Column(name = "id", length = 80)
+//    private String id;
 
-    private LocalDateTime lastUpdateTime; // 记录最后更新时间，用于增量同步
+//    private Timestamp lastUpdateTime; // 记录最后更新时间，用于增量同步
 }

@@ -1,11 +1,9 @@
 package com.clzk.epinet.emr.model;
 
 import com.clzk.epinet.base.model.BaseEntity;
-import lombok.EqualsAndHashCode;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
@@ -19,9 +17,13 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 public class EmrExClinicalItem extends BaseEntity {
 
+    @Id
+    @Column(name = "id", length = 80)
+    private String id;
+
     /** 检查报告 ID */
     @Column(name = "ex_clinical_id")
-    private Long exClinicalId;
+    private String exClinicalId;
 
     /** 检查项目代码 */
     @Column(name = "item_code")
@@ -48,7 +50,7 @@ public class EmrExClinicalItem extends BaseEntity {
     private String examinationQuantificationUnit;
 
     /** 操作人 ID */
-    @Column(name = "operator_id")
+    @Column(name = "operator_id", length = 40)
     private String operatorId;
 
     /** 操作时间 */

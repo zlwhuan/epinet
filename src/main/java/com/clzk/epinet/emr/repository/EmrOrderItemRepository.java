@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface EmrOrderItemRepository  extends BaseRepository<EmrOrderItem> {
-    List<EmrOrderItem> findEmrOrderItemByOrderId(Long orderId);
+    List<EmrOrderItem> findEmrOrderItemByOrderId(String orderId);
 }

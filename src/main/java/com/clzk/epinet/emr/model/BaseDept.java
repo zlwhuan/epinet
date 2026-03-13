@@ -1,48 +1,31 @@
 package com.clzk.epinet.emr.model;
 
 import com.clzk.epinet.base.model.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.time.LocalDateTime;
 
 /**
  * 医院信息系统科室信息实体
  */
-@Entity
-@Table(name = "emr_base_dept")
-@Data
 @EqualsAndHashCode(callSuper = true)
+@Entity
+@Table(name = "CRB_BASE_DEPT")
+@Data
 public class BaseDept extends BaseEntity {
 
-    /**
-     * 院内科室代码
-     */
-    @Column(name = "dept_code", nullable = false, length = 50)
+    @Id
+    @Column(name = "DEPT_CODE", length = 20)
     private String deptCode;
-
-    /**
-     * 院内科室名称
-     */
-    @Column(name = "dept_name", nullable = false, length = 100)
+    @Column(name = "DEPT_NAME", length = 50)
     private String deptName;
-
-    /**
-     * 对应的前置软件科室代码
-     */
-    @Column(name = "target_dept_code", length = 50)
+    @Column(name = "TARGET_DEPT_CODE", length = 20)
     private String targetDeptCode;
-
-    /**
-     * 对应的前置软件科室名称
-     */
-    @Column(name = "target_dept_name", length = 100)
+    @Column(name = "TARGET_DEPT_NAME", length = 50)
     private String targetDeptName;
+    @Column(name = "CREATE_TIME", length = 20)
+    private LocalDateTime createTime;
 
-    /**
-     * 创建时间
-     */
-    @Column(name = "create_time")
-    private String createTime;
 }

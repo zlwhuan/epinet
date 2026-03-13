@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <link rel="stylesheet" href="index.css">
+    <script src="vue.global.js"></script>
+    <script src="axios.min.js"></script>
+    <script src="index.full.js"></script>
+    <script src="index.iife.min.js"></script>
+    <script src="zh-cn.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f5f7fa;
+        }
+
+        .container {
+            padding: 20px;
+            background: #fff;
+            /* min-height: 100vh; */
+        }
+
+        .search-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        .cell-always-edit {
+            min-height: 32px;
+            line-height: 32px;
+            padding: 0 8px;
+        }
+
+        .el-input--small .el-input__inner {
+            height: 28px;
+            line-height: 28px;
+        }
+
+        .always-edit-cell {
+            padding: 0;
+        }
+
+        .always-edit-cell .el-input {
+            width: 100%;
+        }
+
+        .always-edit-cell .el-input__inner {
+            border: none;
+            border-radius: 0;
+            background: transparent;
+        }
+
+        .always-edit-cell .el-input__inner:focus {
+            background: #fff;
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="container">
+        <!-- 标题区域 -->
+        <div style="padding: 16px 20px; border-bottom:1px solid #ebeef5; background:#fafafa;">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+                <h3 style="margin:0; color:#303133; line-height:1.5;">科室代码映射</h3>
+            </div>
+        </div>
+
+
+        <!-- 数据表格 -->
+        <div>
+            <!-- 搜索与操作区域 -->
+            <div class="search-bar">
+                <el-input v-model="searchKeyword" placeholder="搜索 本地编码/名称 或 标准编码/名称" clearable @clear="filterTable"
+                    style="width:320px;" @input="filterTable" @clear="filterTable">
+                    <template #prefix>
+                        <el-icon>
+                            <Search />
+                        </el-icon>
+                    </template>
+                </el-input>
+                <!-- 状态 -->
+                <el-select v-model="searchStatus" placeholder="映射状态" clearable style="width: 140px"
+                    @change="filterTable" @clear="filterTable">
+                    <el-option v-for="item in statusOptions" :key="item.value" :label="item.label"
+                        :value="item.value" />
+                </el-select>
+            </div>
+            <el-table :data="paginatedData" stripe border style="width: 100%"
+                :header-cell-style="{background:'#f5f7fa', color:'#606266'}">
+
+                <!-- 标准编码 -->
+                <el-table-column prop="code" label="科室编码" min-width="200">
+                    <template #default="{row}">
+                        <span>{{ row.code }}</span>
+                    </template>
+                </el-table-column>
+
+                <!-- 标准名称 -->
+                <el-table-column prop="name" label="科室名称" min-width="200">
+                    <template #default="{row}">
+                        <span>{{ row.name }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column label="国家标准科室" min-width="500">
+                    <template #default="{row}">
+                        <div class="std-cell" @click="openPicker(row)"
+                            style="cursor: pointer; padding: 8px; border: 1px dashed #dcdfe6; border-radius: 4px; min-height: 32px; display: flex; align-items: center; justify-content: space-between;">
+                            <span v-if="row.stdCode">{{ row.stdCode }} - {{ row.stdName }}</span>
+                            <span v-else style="color: #909399;">点击映射标准科室</span>
+                            <el-icon>
+                                <Edit />
+                            </el-icon>
+                        </div>
+                    </template>
+                </el-table-column>
+
+
+                <!-- 映射状态 -->
+                <el-table-column label="映射状态" width="100" align="center">
+                    <template #default="{row}">
+                        <el-tag v-if="row.stdCode && row.stdName" type="success" size="small">
+                            已映射
+                        </el-tag>
+                        <el-tag v-else type="warning" size="small">
+                            未映射
+                        </el-tag>
+                    </template>
+                </el-table-column>
+
+            </el-table>
+            <!-- 分页控件 -->
+            <div v-if="total > 0" style="margin: 20px 0; text-align: right;">
+                <el-pagination background layout="total, sizes, prev, pager, next, jumper"
+                    :page-sizes="[10, 20, 50, 100, 200]" :page-size="pageSize" :current-page="currentPage"
+                    :total="total" @size-change="val => { pageSize = val; currentPage = 1; }"
+                    @current-change="val => currentPage = val" />
+            </div>
+            <!-- 空状态 -->
+            <div v-if="dictList.length === 0"
+                style="padding:60px; text-align:center; color:#909399; border:1px dashed #dcdfe6; border-radius:4px; margin-top:20px;">
+                <div style="margin-top:16px; font-size:14px;">
+                    当前字典类目暂无数据
+                </div>
+            </div>
+        </div>
+        <el-drawer v-model="pickerVisible" title="选择国家标准科室" size="50%" :close-on-click-modal="false">
+            <div style="padding: 0 20px;">
+                <!-- 搜索输入 -->
+                <el-input v-model="pickerSearch" placeholder="输入编码或名称搜索" clearable @input="filterStandards"
+                    style="margin-bottom: 16px;">
+                    <template #prefix>
+                        <el-icon>
+                            <Search />
+                        </el-icon>
+                    </template>
+                </el-input>
+
+                <!-- 标准列表表格 -->
+                <el-table :data="filteredStandards" height="calc(100vh - 200px)" stripe @row-click="selectStandard"
+                    :row-style="{cursor: 'pointer'}">
+                    <el-table-column prop="stdCode" label="编码" width="120">
+                        <template #default="{row}">
+                            <span style="color:#409EFF;">{{ row.stdCode }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="stdName" label="名称" min-width="200" show-overflow-tooltip>
+                        <template #default="{row}">
+                            <span style="color:#409EFF;">{{ row.stdName }}</span>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <!-- 空状态 -->
+                <el-empty v-if="filteredStandards.length === 0" description="无匹配结果" />
+            </div>
+        </el-drawer>
+    </div>
+
+    <script>
+        const {
+            createApp,
+            ref,
+            reactive,
+            computed,
+            watch,
+            onMounted
+        } = Vue;
+        const ElMessage = ElementPlus.ElMessage;
+        const ElMessageBox = ElementPlus.ElMessageBox;
+
+        const app = createApp({
+            setup() {
+                // 新增：分页相关
+                const currentPage = ref(1);
+                const pageSize = ref(20);           // 可自行调整默认每页条数
+                const total = ref(0);
+
+
+                const allStandards = ref([]);
+                const dictList = ref([]);
+                const searchKeyword = ref('');
+                const filteredDictList = ref([]);   // 用于显示的过滤后数据
+                const pickerVisible = ref(false);
+                const pickerSearch = ref('');
+                const currentRow = ref(null);
+                const filteredStandards = ref([...allStandards.value]);  // 初始全量
+
+                const searchStatus = ref('all');  // 改为 null 表示“全部”
+
+                const statusOptions = ref([
+                    { label: '全部', value: 'all' },           // 新增“全部”选项（推荐）
+                    { label: '已映射', value: 'mapped' },
+                    { label: '未映射', value: 'unmapped' }
+                ]);
+
+                const handleSizeChange = (val) => {
+                    pageSize.value = val;
+                    currentPage.value = 1;  // 切换每页条数时通常回到第一页
+                };
+
+                const handleCurrentChange = (val) => {
+                    currentPage.value = val;
+                    // 可以在这里做一些额外操作，比如滚动到顶部
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                };
+
+                // 保存每个行的原始值，用于对比是否真的变更
+                const originals = ref({});   // { row.id: { code: "...", name: "..." } }
+
+                // 计算当前页要显示的数据（替换原来的 :data="filteredDictList"）
+                const paginatedData = computed(() => {
+                    const start = (currentPage.value - 1) * pageSize.value;
+                    const end = start + pageSize.value;
+                    return filteredDictList.value.slice(start, end);
+                });
+                // 每次过滤条件变化时，重置页码到第1页，并更新 total
+                watch([searchKeyword, searchStatus], () => {
+                    currentPage.value = 1;           // 筛选条件变了 → 回到第一页
+                    total.value = filteredDictList.value.length;
+                }, { immediate: true });
+
+                const fetchDictData = async () => {
+                    try {
+                        const { data } = await axios.get(`http://localhost:8080/emr/dept/list`);
+                        dictList.value = (data || []).map(item => {
+                            // 初始化时记录原始值
+                            originals.value[item.id] = {
+                                code: item.code || '',
+                                name: item.name || ''
+                            };
+                            return item;
+                        });
+                        filteredDictList.value = [...dictList.value];
+                        total.value = filteredDictList.value.length;
+                        currentPage.value = 1;
+                    } catch (err) {
+                        console.error(err);
+                        dictList.value = [];
+                        ElMessage.error('加载字典失败');
+                    }
+                };
+
+                const standardsLoading = ref(false);  // 新增 loading 状态
+
+                // 新函数：加载标准科室数据
+                const fetchStandards = async () => {
+                    standardsLoading.value = true;
+                    try {
+                        const { data } = await axios.get('http://localhost:8080/emr/dept/standards');
+                        allStandards.value = data || [];  // 直接赋值数组
+
+                        // 初始化过滤列表
+                        filteredStandards.value = [...allStandards.value];
+
+                        // 可选：如果接口返回空，提示用户
+                        if (allStandards.value.length === 0) {
+                            ElMessage.warning('暂无标准科室数据');
+                        }
+                    } catch (err) {
+                        console.error('加载标准科室失败', err);
+                        ElMessage.error('加载标准科室失败');
+                        allStandards.value = [];
+                        filteredStandards.value = [];
+                    } finally {
+                        standardsLoading.value = false;
+                    }
+                };
+
+                // Simple debounce utility (place this before your createApp)
+                function debounce(fn, delay) {
+                    let timer = null;
+                    return function (...args) {
+                        if (timer) {
+                            clearTimeout(timer);
+                        }
+                        timer = setTimeout(() => {
+                            fn.apply(this, args);
+                        }, delay);
+                    };
+                }
+
+                // 其他代码保持不变，例如：
+                const openPicker = (row) => {
+                    currentRow.value = row;
+                    // pickerSearch.value = '';
+                    // filteredStandards.value = [...allStandards.value];  // 重置为全量
+                    pickerVisible.value = true;
+                };
+
+                // 过滤标准列表（防抖可选）
+                const filterStandards = debounce(() => {
+                    const q = pickerSearch.value.trim().toLowerCase();
+                    if (!q) {
+                        filteredStandards.value = [...allStandards.value];
+                        return;
+                    }
+                    filteredStandards.value = allStandards.value.filter(item =>
+                        (item.stdCode || '').toLowerCase().includes(q) ||
+                        (item.stdName || '').toLowerCase().includes(q)
+                    );
+                }, 300);  // 加防抖，输入频繁时不卡
+
+                const shouldSave = (row) => {
+                    const ori = originals.value[row.id];
+                    if (!ori) return false;
+                    return (row.stdCode || '') !== ori.stdCode || (row.stdName || '') !== ori.stdName;
+                };
+                // 选中标准
+                const selectStandard = async (stdItem) => {
+                    if (!currentRow.value) return;
+                    currentRow.value.stdCode = stdItem.stdCode;
+                    currentRow.value.stdName = stdItem.stdName;
+                    currentRow.value.stdDesc = stdItem.stdDesc || '';
+
+                    await saveRowIfChanged(currentRow.value);
+                    pickerVisible.value = false;
+                };
+
+
+                // 保存逻辑（可被 blur 和 enter 调用）
+                const saveRowIfChanged = async (row) => {
+                    if (!shouldSave(row)) {
+                        ElMessage.success('保存成功');
+                        return false;
+                    }
+
+                    try {
+                        const response = await axios.post('http://localhost:8080/emr/dic/24', [{
+                            id: row.id,
+                            code: row.code?.trim() || '',
+                            name: row.name?.trim() || '',
+                            isNew: true,
+                            stdCode: row.stdCode,
+                            stdName: row.stdName,
+                            stdDesc: row.stdDesc
+                        }]);
+                        if (response.data.result) {
+                            ElMessage.success('保存成功');
+                            // 更新原始值
+                            originals.value[row.id] = {
+                                stdCode: row.stdCode || '',
+                                stdName: row.stdName || ''
+                            };
+                        } else {
+                            throw new Error(response.data.msg || '未知错误');
+                        }
+
+                        return true;
+                    } catch (err) {
+                        ElMessage.error('保存失败：' + err.message);
+                        // 回滚
+                        const ori = originals.value[row.id];
+                        row.stdCode = ori.stdCode;
+                        row.stdName = ori.stdName;
+                        return false;
+                    }
+                };
+
+
+                onMounted(() => {
+                    fetchDictData();
+                    fetchStandards();
+                });
+
+                const selectedStdName = ref('');
+                const selectedStdDesc = ref('');
+                const standardOptions = ref([]);
+                const searchLoading = ref(false);
+                const addLoading = ref(false);
+
+
+                // 前端本地过滤（取代原来的 remote search）
+                const searchStandard = (query) => {
+                    const q = (query || '').trim().toLowerCase();
+                    if (!q) {
+                        // 可选：空输入时显示最近用过的 / 热门的，或干脆清空
+                        standardOptions.value = [...allStandards.value];
+                        return;
+                    }
+
+                    standardOptions.value = allStandards.value.filter(item => {
+                        const code = (item.stdCode || '').toLowerCase();
+                        const name = (item.stdName || '').toLowerCase();
+                        return code.includes(q) || name.includes(q);
+                    });
+
+                    // 可选：限制最多显示 50 条，避免卡顿
+                    // standardOptions.value = standardOptions.value.slice(0, 50);
+                };
+
+                // 选中时带出名称和描述（逻辑不变）
+                const handleStdSelect = (row) => {
+                    const selected = allStandards.value.find(item =>
+                        item.stdCode === row.stdCode || item.stdName === row.stdName
+                    );
+                    if (selected) {
+                        row.stdName = selected.stdName || '';
+                        row.stdCode = selected.stdCode || '';
+                    }
+                };
+
+                const filterTable = () => {
+                    const kw = (searchKeyword.value || '').trim().toLowerCase();
+                    const status = searchStatus.value ?? 'all';  // 'all', 'mapped', 'unmapped'  
+                    console.log('过滤表格，关键字:', kw, '状态:', status);
+                    filteredDictList.value = dictList.value.filter(row => {
+                        // 关键字匹配（原有逻辑）
+                        const matchesKeyword = kw === '' || [
+                            row.code,
+                            row.name,
+                            row.stdCode,
+                            row.stdName
+                        ].some(val => (val || '').toLowerCase().includes(kw));
+
+                        // 状态匹配
+                        const isMapped = !!(row.stdCode && row.stdName);  // 更可靠的判断
+                        let matchesStatus = true;
+                        if (status !== 'all') {
+                            matchesStatus = (status === 'mapped') ? isMapped : !isMapped;
+                        }
+                        // 如果 status 为 null，则 matchesStatus 保持 true（显示全部）
+
+                        return matchesKeyword && matchesStatus;
+                    });
+                    total.value = filteredDictList.value.length;
+                    currentPage.value = 1;
+                };
+
+
+
+                return {
+                    currentPage,
+                    pageSize,
+                    total,
+                    handleSizeChange,
+                    handleCurrentChange,
+                    paginatedData,
+                    dictList,
+                    standardOptions,
+                    searchLoading,
+                    addLoading,
+                    selectedStdName,
+                    selectedStdDesc,
+                    searchStandard,
+                    handleStdSelect,
+                    filteredDictList,
+                    searchKeyword,
+                    filterTable,
+                    pickerVisible,
+                    pickerSearch,
+                    filteredStandards,
+                    openPicker,
+                    filterStandards,
+                    selectStandard,
+                    standardsLoading,
+                    statusOptions,
+                    searchStatus
+                };
+            }
+        });
+
+        if (window.ElementPlusIconsVue) {
+            for (const [name, component] of Object.entries(window.ElementPlusIconsVue)) {
+                app.component(name, component);
+            }
+        }
+        app.use(ElementPlus);
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

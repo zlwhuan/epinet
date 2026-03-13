@@ -9,6 +9,7 @@ import lombok.Data;
 public class DictionaryCategory {
 
     @Id
+    @Column(name = "id", length = 80)
     private String id;
 
     @Column(name = "category_code", unique = true, nullable = false, length = 50)

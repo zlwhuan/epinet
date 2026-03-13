@@ -1,11 +1,9 @@
 package com.clzk.epinet.emr.model;
 
 import com.clzk.epinet.base.model.BaseEntity;
-import lombok.EqualsAndHashCode;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
@@ -19,22 +17,26 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 public class EmrOrderItem extends BaseEntity {
 
+    @Id
+    @Column(name = "id", length = 80)
+    private String id;
+
     /**
      * 医嘱处方 ID
      */
-    @Column(name = "order_id", nullable = false)
-    private Long orderId;
+    @Column(name = "order_id")
+    private String orderId;
 
     /**
      * 药物代码
      */
-    @Column(name = "drug_code", nullable = false)
+    @Column(name = "drug_code")
     private String drugCode;
 
     /**
      * 药物名称
      */
-    @Column(name = "drug_name", nullable = false)
+    @Column(name = "drug_name")
     private String drugName;
 
     /**
@@ -94,7 +96,7 @@ public class EmrOrderItem extends BaseEntity {
     /**
      * 操作人 ID
      */
-    @Column(name = "operator_id", nullable = false)
+    @Column(name = "operator_id", length = 40)
     private String operatorId;
 
     /**

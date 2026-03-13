@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface EmrExLabItemRepository  extends BaseRepository<EmrExLabItem> {
-    List<EmrExLabItem> findEmrExLabItemByExLabId(Long exLabId);
+    List<EmrExLabItem> findEmrExLabItemByExLabId(String exLabId);
 }

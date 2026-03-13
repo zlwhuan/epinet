@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface EmrVitalSignsRecordRepository  extends BaseRepository<EmrVitalSignsRecord> {
-    List<EmrVitalSignsRecord> findAllByPatientId(Long patientId);
+    List<EmrVitalSignsRecord> findAllByPatientId(String patientId);
 }

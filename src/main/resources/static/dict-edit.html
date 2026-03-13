@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <link rel="stylesheet" href="index.css">
+    <script src="vue.global.js"></script>
+    <script src="axios.min.js"></script>
+    <script src="index.full.js"></script>
+    <script src="index.iife.min.js"></script>
+    <script src="zh-cn.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f5f7fa;
+        }
+
+        .container {
+            padding: 20px;
+            background: #fff;
+            /* min-height: 100vh; */
+        }
+
+        .search-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        .cell-always-edit {
+            min-height: 32px;
+            line-height: 32px;
+            padding: 0 8px;
+        }
+
+        .el-input--small .el-input__inner {
+            height: 28px;
+            line-height: 28px;
+        }
+
+        .always-edit-cell {
+            padding: 0;
+        }
+
+        .always-edit-cell .el-input {
+            width: 100%;
+        }
+
+        .always-edit-cell .el-input__inner {
+            border: none;
+            border-radius: 0;
+            background: transparent;
+        }
+
+        .always-edit-cell .el-input__inner:focus {
+            background: #fff;
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="container">
+        <!-- 标题区域 -->
+        <div style="padding: 16px 20px; border-bottom:1px solid #ebeef5; background:#fafafa;">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+                <h3 style="margin:0; color:#303133; line-height:1.5;">{{ currentCategoryName }}</h3>
+                <!-- <el-button type="primary" @click="openAddDialog">新增字典项</el-button> -->
+            </div>
+        </div>
+        <!-- 弹窗 -->
+        <el-dialog v-model="addDialogVisible" title="新增字典映射" width="500px" :close-on-click-modal="false"
+            @close="resetAddForm">
+            <el-form :model="addForm" ref="addFormRef" label-width="100px" :rules="addRules">
+                <el-form-item label="本地编码" prop="code">
+                    <el-input v-model.trim="addForm.code" placeholder="请输入本地编码" />
+                </el-form-item>
+
+                <el-form-item label="本地名称" prop="name">
+                    <el-input v-model.trim="addForm.name" placeholder="请输入本地名称" />
+                </el-form-item>
+
+                <el-form-item label="标准编码/名称" prop="stdCode">
+                    <el-select v-model="addForm.stdCode" filterable :filter-method="searchStandard" reserve-keyword
+                        placeholder="输入编码或名称搜索" style="width:100%" @change="handleStdSelect">
+                        <el-option v-for="item in standardOptions" :key="item.stdCode"
+                            :label="`${item.stdCode} - ${item.stdName}`" :value="item.stdCode">
+                            <div style="display:flex; justify-content:space-between;">
+                                <span>{{ item.stdCode }}</span>
+                                <span style="color:#909399; margin-left:12px;">{{ item.stdName }}</span>
+                            </div>
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+                <!-- 如果需要显示描述 -->
+                <el-form-item label="标准描述">
+                    <el-input type="textarea" :value="selectedStdDesc" disabled rows="2" />
+                </el-form-item>
+
+            </el-form>
+
+            <template #footer>
+                <el-button @click="addDialogVisible = false">取消</el-button>
+                <el-button type="primary" :loading="addLoading" @click="submitAdd">确定</el-button>
+            </template>
+        </el-dialog>
+
+
+        <!-- 数据表格 -->
+        <div>
+            <!-- 搜索与操作区域 -->
+            <div class="search-bar">
+                <el-input v-model="searchKeyword" placeholder="搜索 本地编码/名称 或 标准编码/名称" clearable style="width:320px;"
+                    @input="filterTable" @clear="filterTable">
+                    <template #prefix>
+                        <el-icon>
+                            <Search />
+                        </el-icon>
+                    </template>
+                </el-input>
+
+                <el-button type="primary" @click="openAddDialog">新增字典项</el-button>
+            </div>
+            <el-table :data="filteredDictList" stripe border style="width: 100%"
+                :header-cell-style="{background:'#f5f7fa', color:'#606266'}">
+
+                <!-- 本地编码列（一直可编辑） -->
+                <el-table-column prop="code" label="本地编码" width="150" align="center" class-name="always-edit-cell">
+                    <template #default="{ row }">
+                        <el-input v-model.trim="row.code" size="default" placeholder="请输入本地编码"
+                            @blur="handleBlur(row, 'code')" @keyup.enter="handleEnter(row, 'code')" />
+                    </template>
+                </el-table-column>
+
+                <!-- 本地名称列（一直可编辑） -->
+                <el-table-column prop="name" label="本地名称" min-width="200" class-name="always-edit-cell">
+                    <template #default="{ row }">
+                        <el-input v-model.trim="row.name" size="default" placeholder="请输入本地名称"
+                            @blur="handleBlur(row, 'name')" @keyup.enter="handleEnter(row, 'name')" />
+                    </template>
+                </el-table-column>
+
+                <!-- 标准编码 -->
+                <el-table-column prop="stdCode" label="标准编码" width="150" align="center">
+                    <template #default="{row}">
+                        <span style="color:#409EFF;">{{ row.stdCode }}</span>
+                    </template>
+                </el-table-column>
+
+                <!-- 标准名称 -->
+                <el-table-column prop="stdName" label="标准名称" min-width="200">
+                    <template #default="{row}">
+                        <span style="color:#409EFF;">{{ row.stdName }}</span>
+                    </template>
+                </el-table-column>
+
+                <!-- 映射状态 -->
+                <el-table-column label="映射状态" width="100" align="center">
+                    <template #default="{row}">
+                        <el-tag v-if="row.code && row.name" type="success" size="small">
+                            已映射
+                        </el-tag>
+                        <el-tag v-else type="warning" size="small">
+                            未映射
+                        </el-tag>
+                    </template>
+                </el-table-column>
+
+                <!-- 标准描述 -->
+                <el-table-column prop="stdDesc" label="标准描述" min-width="250" show-overflow-tooltip>
+                    <template #default="{row}">
+                        <span style="color:#606266;">{{ row.stdDesc }}</span>
+                    </template>
+                </el-table-column>
+                <!-- 操作列 -->
+                <el-table-column label="操作" width="100" align="center">
+                    <template #default="{ row }">
+                        <el-button v-if="row.isNew" type="danger" size="small" link @click="handleDelete(row)">
+                            删除
+                        </el-button>
+                        <!-- 如果你想对非新增行显示其他操作，也可以在这里加条件 -->
+                        <span v-else style="color:#909399;">—</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+
+            <!-- 空状态 -->
+            <div v-if="dictList.length === 0"
+                style="padding:60px; text-align:center; color:#909399; border:1px dashed #dcdfe6; border-radius:4px; margin-top:20px;">
+                <div style="margin-top:16px; font-size:14px;">
+                    当前字典类目暂无数据
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, onMounted } = Vue;
+        const ElMessage = ElementPlus.ElMessage;
+        const ElMessageBox = ElementPlus.ElMessageBox;
+
+        const app = createApp({
+            setup() {
+                const allStandards = ref([]);
+                const dictList = ref([]);
+                const currentCategoryName = ref('请选择字典类目');
+                const category = ref('');
+                const searchKeyword = ref('');
+                const filteredDictList = ref([]);   // 用于显示的过滤后数据
+
+                // 保存每个行的原始值，用于对比是否真的变更
+                const originals = ref({});   // { row.id: { code: "...", name: "..." } }
+
+                const fetchDictData = async (categoryCode) => {
+                    try {
+                        const { data } = await axios.get(`http://localhost:8080/emr/dic/${categoryCode}`);
+                        dictList.value = (data || []).map(item => {
+                            // 初始化时记录原始值
+                            originals.value[item.id] = {
+                                code: item.code || '',
+                                name: item.name || ''
+                            };
+                            return item;
+                        });
+                        filteredDictList.value = [...dictList.value];
+                        const uniqueMap = new Map();
+                        data.forEach(item => {
+                            if (item.stdCode && !uniqueMap.has(item.stdCode)) {
+                                uniqueMap.set(item.stdCode, item);
+                            }
+                        });
+
+                        allStandards.value = Array.from(uniqueMap.values());
+                    } catch (err) {
+                        console.error(err);
+                        dictList.value = [];
+                        ElMessage.error('加载字典失败');
+                    }
+                };
+
+                const shouldSave = (row) => {
+                    const ori = originals.value[row.id];
+                    if (!ori) return false;
+                    return (row.code || '') !== ori.code || (row.name || '') !== ori.name;
+                };
+
+
+                // 判断是否code重复，并决定是否发请求
+                const isRepeatCode = (row) => {
+                    const allRows = dictList.value || []; // 请替换成您的实际数据变量
+
+                    // 如果当前行没有code，就不检查重复
+                    if (!row.code) return false;
+
+                    // 查找是否有其他行的code与当前行相同
+                    // 注意：排除当前行本身，使用id或其他唯一标识符来判断
+                    const duplicateRow = allRows.find(item => {
+                        // 排除自身
+                        if (item.id === row.id) return false;
+                        // 检查code是否相同（考虑空字符串的情况）
+                        return (item.code || '') === (row.code || '');
+                    });
+                    if (duplicateRow) {
+                        ElMessage.error('保存失败：' + "编码重复");
+                        // 回滚
+                        const ori = originals.value[row.id];
+                        row.code = ori.code;
+                        row.name = ori.name;
+                    }
+                    // 如果找到重复行，返回true
+                    return !!duplicateRow;
+                };
+
+                // 保存逻辑（可被 blur 和 enter 调用）
+                const saveRowIfChanged = async (row) => {
+                    if (!shouldSave(row)) return false;
+                    //判断code是否重复
+                    if (isRepeatCode(row)) return false;
+
+                    try {
+                        const response = await axios.post('http://localhost:8080/emr/dic/' + category.value, [{
+                            id: row.id,
+                            code: row.code?.trim() || '',
+                            name: row.name?.trim() || '',
+                            stdCode: row.stdCode,
+                            stdName: row.stdName,
+                            stdDesc: row.stdDesc
+                        }]);
+                        if (response.data.result) {
+                            ElMessage.success('保存成功');
+
+                            // 更新原始值
+                            originals.value[row.id] = {
+                                code: row.code || '',
+                                name: row.name || ''
+                            };
+                        } else {
+                            throw new Error(response.data.msg || '未知错误');
+                        }
+
+                        return true;
+                    } catch (err) {
+                        ElMessage.error('保存失败：' + err.message);
+                        // 回滚
+                        const ori = originals.value[row.id];
+                        row.code = ori.code;
+                        row.name = ori.name;
+                        return false;
+                    }
+                };
+
+                // blur 时触发保存
+                const handleBlur = (row, field) => {
+                    // 可以在这里加防抖或延迟，但大多数场景直接保存即可
+                    saveRowIfChanged(row);
+                };
+
+                // 按 Enter 也保存
+                const handleEnter = (row, field) => {
+                    saveRowIfChanged(row);
+                    // 可选：保存成功后焦点可以留在当前输入框，或移到下一个
+                };
+
+                onMounted(() => {
+                    const params = new URLSearchParams(location.search);
+                    currentCategoryName.value = params.get('currentCategoryName') || '请选择字典类目';
+                    category.value = params.get('category') || '';
+
+                    if (category.value) fetchDictData(category.value);
+                });
+
+                const addDialogVisible = ref(false);
+                const addFormRef = ref(null);
+                const addForm = ref({
+                    code: '',
+                    name: '',
+                    stdCode: '',
+                    stdName: '',
+                    stdDesc: ''
+                });
+                const selectedStdName = ref('');
+                const selectedStdDesc = ref('');
+                const standardOptions = ref([]);
+                const searchLoading = ref(false);
+                const addLoading = ref(false);
+
+                const addRules = {
+                    code: [{ required: true, message: '请输入本地编码', trigger: 'blur' }],
+                    name: [{ required: true, message: '请输入本地名称', trigger: 'blur' }],
+                    stdCode: [{ required: true, message: '请选择标准编码/名称', trigger: 'change' }]
+                };
+
+                // 重置表单
+                const resetAddForm = () => {
+                    addForm.value = { code: '', name: '', stdCode: '', stdName: '', stdDesc: '' };
+                    selectedStdName.value = '';
+                    selectedStdDesc.value = '';
+                    standardOptions.value = [];
+                    if (addFormRef.value) addFormRef.value.resetFields();
+                };
+
+                // 提交新增
+                const submitAdd = async () => {
+                    if (!addFormRef.value) return;
+                    try {
+                        await addFormRef.value.validate();
+
+                        addLoading.value = true;
+
+                        const payload = [{
+                            // id 由后端生成，传空或不传
+                            code: addForm.value.code.trim(),
+                            name: addForm.value.name.trim(),
+                            stdCode: addForm.value.stdCode,
+                            stdName: addForm.value.stdName,
+                            stdDesc: addForm.value.stdDesc,
+                            isNew: true
+                        }];
+
+                        await axios.post(`http://localhost:8080/emr/dic/${category.value}`, payload);
+
+                        ElMessage.success('新增成功');
+
+                        // 刷新列表
+                        await fetchDictData(category.value);
+
+                        addDialogVisible.value = false;
+                        resetAddForm();
+
+                    } catch (err) {
+                        if (err !== 'cancel') {  // el-form validate 取消不弹
+                            ElMessage.error('新增失败：' + (err.response?.data?.message || '请检查输入'));
+                        }
+                    } finally {
+                        addLoading.value = false;
+                    }
+                };
+
+                // 打开弹窗
+                const openAddDialog = () => {
+                    resetAddForm();
+                    addDialogVisible.value = true;
+                };
+
+                // 前端本地过滤（取代原来的 remote search）
+                const searchStandard = (query) => {
+                    const q = (query || '').trim().toLowerCase();
+                    if (!q) {
+                        // 可选：空输入时显示最近用过的 / 热门的，或干脆清空
+                        standardOptions.value = [...allStandards.value];
+                        return;
+                    }
+
+                    standardOptions.value = allStandards.value.filter(item => {
+                        const code = (item.stdCode || '').toLowerCase();
+                        const name = (item.stdName || '').toLowerCase();
+                        return code.includes(q) || name.includes(q);
+                    });
+
+                    // 可选：限制最多显示 50 条，避免卡顿
+                    // standardOptions.value = standardOptions.value.slice(0, 50);
+                };
+
+                // 选中时带出名称和描述（逻辑不变）
+                const handleStdSelect = (stdCode) => {
+                    const selected = allStandards.value.find(item => item.stdCode === stdCode);
+                    if (selected) {
+                        addForm.value.stdName = selected.stdName || '';
+                        addForm.value.stdDesc = selected.stdDesc || '';
+                        selectedStdName.value = selected.stdName || '';
+                        selectedStdDesc.value = selected.stdDesc || '';
+                    }
+                };
+
+                const filterTable = () => {
+                    const kw = (searchKeyword.value || '').trim().toLowerCase();
+
+                    if (!kw) {
+                        filteredDictList.value = [...dictList.value];
+                        return;
+                    }
+
+                    filteredDictList.value = dictList.value.filter(row => {
+                        return (
+                            (row.code || '').toLowerCase().includes(kw) ||
+                            (row.name || '').toLowerCase().includes(kw) ||
+                            (row.stdCode || '').toLowerCase().includes(kw) ||
+                            (row.stdName || '').toLowerCase().includes(kw)
+                        );
+                    });
+                };
+
+                // 删除逻辑（针对前端已新增但未保存、或已保存的行）
+                const handleDelete = async (row) => {
+                    // 1. 如果是前端临时新增的行（还未调用过保存接口）
+                    if (row.isNew && !row.id) {
+                        // 直接从列表移除（最简单）
+                        const index = dictList.value.findIndex(r => r === row);
+                        if (index !== -1) {
+                            dictList.value.splice(index, 1);
+                            ElMessage.success('已移除新增项');
+                        }
+                        return;
+                    }
+
+                    // 2. 如果已经有 id（说明已保存到后端），需要调用删除接口
+                    if (!row.id) {
+                        ElMessage.warning('该行无有效ID，无法删除');
+                        return;
+                    }
+
+                    // 确认弹窗（可选，但强烈建议加）
+                    try {
+                        await ElMessageBox.confirm('确定删除这条字典映射吗？', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        });
+
+                        try {
+                            // 假设你的删除接口是 DELETE /emr/dic/${category.value}/${row.id}
+                            // 或 POST /emr/dic/delete，body { ids: [row.id] }
+                            await axios.delete(`http://localhost:8080/emr/dic/${row.id}`);
+                            // 或 await axios.post('.../delete', { id: row.id });
+
+                            ElMessage.success('删除成功');
+
+                            // 从列表移除
+                            const index = dictList.value.findIndex(r => r.id === row.id);
+                            if (index !== -1) {
+                                dictList.value.splice(index, 1);
+                            }
+
+                            // 可选：刷新列表
+                            // await fetchDictData(category.value);
+
+                        } catch (err) {
+                            ElMessage.error('删除失败：' + (err.response?.data?.message || '请稍后重试'));
+                        }
+                    } catch {
+                        // 用户取消删除，什么都不做
+                    }
+                };
+
+                // 如果你想实现“新增后立即在表格显示一条可编辑行”（推荐的交互方式）
+                // 可以加下面这个方法，在 openAddDialog 提交成功后不直接刷新，而是前端插入临时行
+                const addTemporaryRow = (newItem) => {
+                    // 后端保存成功后返回的新数据（假设接口返回完整对象）
+                    // 或你自己构造
+                    const tempRow = {
+                        ...newItem,
+                        isNew: true,           // 标记为前端新增（可用于显示删除按钮）
+                        editMode: false,       // 如果你恢复了编辑模式，这里可以控制
+                        // code, name, stdCode 等已填充
+                    };
+                    dictList.value.unshift(tempRow);  // 插入到最前面
+                };
+
+                // 示例：在 submitAdd 成功后调用（替代原来的 fetchDictData）
+                // const submitAdd = async () => {
+                //     // ... 验证、提交 ...
+                //     const { data } = await axios.post(...);
+                //     addTemporaryRow(data);  // 前端插入新行
+                //     ElMessage.success('新增成功');
+                //     addDialogVisible.value = false;
+                // };
+
+                return {
+                    dictList,
+                    currentCategoryName,
+                    category,
+                    handleBlur,
+                    handleEnter,
+                    addDialogVisible,
+                    addForm,
+                    addFormRef,
+                    standardOptions,
+                    searchLoading,
+                    addLoading,
+                    selectedStdName,
+                    selectedStdDesc,
+                    searchStandard,
+                    handleStdSelect,
+                    openAddDialog,
+                    submitAdd,
+                    addRules,
+                    resetAddForm,
+                    handleDelete,
+                    filteredDictList,
+                    searchKeyword,
+                    filterTable,
+                };
+            }
+        });
+        // 关键：全局注册图标组件
+        if (window.ElementPlusIconsVue) {
+            for (const [name, component] of Object.entries(window.ElementPlusIconsVue)) {
+                app.component(name, component);
+            }
+            // console.log('图标已全局注册，可用图标数：', Object.keys(window.ElementPlusIconsVue).length);
+        } else {
+            // console.error('图标库未加载！检查 <script src="https://cdn.jsdelivr.net/npm/@element-plus/icons-vue@2.3.1/dist/index.iife.min.js"> 是否成功');
+        }
+
+        app.use(ElementPlus);
+        app.mount('#app');
+    </script>
+</body>
+
+</html>
