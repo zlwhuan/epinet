@@ -5,9 +5,7 @@ import com.clzk.epinet.base.model.EmrDic;
 import com.clzk.epinet.base.service.BaseApiService;
 import com.clzk.epinet.base.service.QueryService;
 import com.clzk.epinet.base.service.SyncWatermarkService;
-import com.clzk.epinet.emr.model.BaseDept;
-import com.clzk.epinet.emr.model.EmrActivityInfo;
-import com.clzk.epinet.emr.model.EmrPatientInfo;
+import com.clzk.epinet.emr.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,9 +14,11 @@ import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -62,6 +62,7 @@ public class IncrementalSyncExecutor {
                 // 可记录失败项，后续加重试机制
             }
         }
+        handleAfterIfNeeded(entityType, increments); // 关键：处理后续依赖
 
         if (success == total) {
             watermarkService.updateWatermark(typeName, now, success, success + "/" + total);
@@ -71,6 +72,36 @@ public class IncrementalSyncExecutor {
             watermarkService.updateWatermark(typeName, lastWatermark, 0, "部分失败: " + success + "/" + total);
             return SyncResult.partial(success, total);
         }
+    }
+
+    private <T> void handleAfterIfNeeded(Class<T> entityType, List<T> increments) {
+        List itemList = new ArrayList();
+        if (entityType == EmrExLab.class) {
+            List<EmrExLab> emrExLabs = (List<EmrExLab>) increments;
+            List<String> exLabIds = emrExLabs.stream().map(EmrExLab::getId).collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(exLabIds)) return;
+            itemList = queryService.queryByParentIds(EmrExLabItem.class, exLabIds);
+        } else if (entityType == EmrOrder.class) {
+            List<EmrOrder> emrOrders = (List<EmrOrder>) increments;
+            List<String> orderIds = emrOrders.stream().map(EmrOrder::getId).collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(orderIds)) return;
+            itemList = queryService.queryByParentIds(EmrOrderItem.class, orderIds);
+        }
+        if (CollectionUtils.isEmpty(itemList)) return;
+        int success = 0;
+        int total = itemList.size();
+
+        for (Object item : itemList) {
+            try {
+                handleDependenciesIfNeeded(item);   // 关键：处理前置依赖
+                apiService.syncSingleObject(item);
+                success++;
+            } catch (Exception e) {
+                log.error("同步失败 {} id={}: {}", item.getClass(), getId(item), e.getMessage());
+                // 可记录失败项，后续加重试机制
+            }
+        }
+        log.info("后续依赖同步完成 [{}] - 成功: {}/{}", itemList.get(0).getClass().getSimpleName(), success, total);
     }
 
     private void handleDependenciesIfNeeded(Object item) {
@@ -134,3 +165,4 @@ public class IncrementalSyncExecutor {
     }
 
 }
+

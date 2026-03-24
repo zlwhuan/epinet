@@ -2,9 +2,7 @@ package com.clzk.epinet.base.sync;
 
 import com.clzk.epinet.base.dto.SyncResult;
 import com.clzk.epinet.base.executor.IncrementalSyncExecutor;
-import com.clzk.epinet.emr.model.BaseUser;
-import com.clzk.epinet.emr.model.EmrActivityInfo;
-import com.clzk.epinet.emr.model.EmrPatientInfo;
+import com.clzk.epinet.emr.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -40,7 +38,12 @@ public class DataSyncScheduler {
     private final List<Class<?>> syncOrder = List.of(
 //            BaseUser.class,
 //            EmrPatientInfo.class,
-            EmrActivityInfo.class
+            EmrActivityInfo.class,
+            EmrAdmissionInfo.class,
+            EmrDischargeInfo.class,
+            EmrExLab.class,
+            EmrOrder.class,
+            BaseUser.class
             // ... 其他，按依赖顺序排列
     );
 
@@ -57,6 +60,7 @@ public class DataSyncScheduler {
                         try {
                             SyncResult result = syncExecutor.syncIncremental(type);
                             log.info("同步完成 [{}] - 结果: {}", typeName, result);
+
                         } catch (Exception e) {
                             log.error("同步异常 [{}]: {}", typeName, e.getMessage(), e);
                         }

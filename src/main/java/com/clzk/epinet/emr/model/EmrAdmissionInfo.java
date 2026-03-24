@@ -11,147 +11,217 @@ import java.sql.Timestamp;
  * 入院记录信息 - 记录患者的入院基本信息
  */
 @Entity
-@Table(name = "emr_admission_info")
+@Table(name = "EMR_ADMISSION_INFO")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class EmrAdmissionInfo extends BaseEntity {
 
     @Id
-    @Column(name = "id", length = 80)
+    @Column(name = "ID", length = 80, nullable = false)
     private String id;
 
-    @Column(name = "patient_id", length = 80)
-    private String patientId; // 患者 ID
-    @Column(name = "serial_number", length = 20)
-    private String serialNumber; // 住院号
-    @Column(name = "ward_name", length = 50)
-    private String wardName; // 病区名称
-    @Column(name = "ward_no", length = 10)
-    private String wardNo; // 入院病房编号
-    private String bedNo; // 病床号
-    @Column(name = "patient_name", length = 100)
-    private String patientName; // 患者姓名
-    @Column(name = "id_card_type_code", length = 2)
-    private String idCardTypeCode; // 身份证件类别代码
-    @Column(name = "id_card_type_name", length = 20)
-    private String idCardTypeName; // 身份证件类别名称
-    @Column(name = "id_card", length = 50)
-    private String idCard; // 身份证件号码
-    private Timestamp admissionDate; // 入院日期时间
-    @Lob
-    @Column(name = "chief_complaint")
-    private String chiefComplaint; // 主诉
-    @Lob
-    @Column(name = "present_illness_his")
-    private String presentIllnessHis; // 现病史
-    private String healthStatusCode; // 一般健康状况标志
-    @Lob
-    @Column(name = "past_illness_his")
-    private String pastIllnessHis; // 疾病史(含外伤）
-    private String infectionCode; // 患者传染性标志
-    @Lob
-    @Column(name = "infection_his")
-    private String infectionHis; // 传染病史
-    @Lob
-    @Column(name = "vaccination_his")
-    private String vaccinationHis; // 预防接种史
-    @Lob
-    @Column(name = "operation_his")
-    private String operationHis; // 手术史
-    @Lob
-    @Column(name = "blood_transfusion")
-    private String bloodTransfusion; // 输血史
-    @Lob
-    @Column(name = "allergy_his")
-    private String allergyHis; // 过敏史
-    @Lob
-    @Column(name = "personal_his")
-    private String personalHis; // 个人史
-    @Lob
-    @Column(name = "marital_his")
-    private String maritalHis; // 婚姻史
-    @Lob
-    @Column(name = "menstrual_his")
-    private String menstrualHis; // 月经史
-    @Lob
-    @Column(name = "family_his")
-    private String familyHis; // 家族史
-    @Lob
-    @Column(name = "physical_examination")
-    private String physicalExamination; // 体格检查
-    @Lob
-    @Column(name = "specialized_examination")
-    private String specializedExamination; // 专科情况
-    @Lob
-    @Column(name = "studies_summary_result")
-    private String studiesSummaryResult; // 辅助检查
-    @Lob
-    @Column(name = "observation_result")
-    private String observationResult; // 中医“四诊”观察结果
-    @Column(name = "treatment", length = 100)
-    private String treatment; // 治则治法
-    @Column(name = "wm_inital_diagnosis_code", length = 400)
-    private String wmInitalDiagnosisCode; // 初步诊断-西医诊断编码
-    @Column(name = "wm_inital_diagnosis_name", length = 400)
-    private String wmInitalDiagnosisName; // 初步诊断-西医诊断名称
-    @Column(name = "tcm_inital_diagnosis_code", length = 250)
-    private String tcmInitalDiagnosisCode; // 初步诊断-中医病名代码
-    @Column(name = "tcm_inital_diagnosis_name", length = 250)
-    private String tcmInitalDiagnosisName; // 初步诊断-中医病名名称
-    @Column(name = "tcm_inital_syndrome_code", length = 250)
-    private String tcmInitalSyndromeCode; // 初步诊断-中医证候代码
-    @Column(name = "tcm_inital_syndrome_name", length = 250)
-    private String tcmInitalSyndromeName; // 初步诊断-中医证候名称
-    private Timestamp initalDiagnosisDate; // 初步诊断日期
-    @Column (name = "wm_revised_diagnosis_code", length = 400)
-    private String wmRevisedDiagnosisCode; // 修正诊断-西医诊断代码
-    @Column (name = "wm_revised_diagnosis_name", length = 400)
-    private String wmRevisedDiagnosisName; // 修正诊断-西医诊断名称
-    @Column (name = "tcm_revised_diagnosis_code", length = 250)
-    private String tcmRevisedDiagnosisCode; // 修正诊断-中医病名代码
-    @Column (name = "tcm_revised_diagnosis_name", length = 250)
-    private String tcmRevisedDiagnosisName; // 修正诊断-中医病名名称
-    @Column (name = "tcm_revised_syndrome_code", length = 250)
-    private String tcmRevisedSyndromeCode; // 修正诊断-中医证候代码
-    @Column (name = "tcm_revised_syndrome_name", length = 250)
-    private String tcmRevisedSyndromeName; // 修正诊断-中医证候名称
-    private Timestamp revisedDiagnosisDate; // 修正诊断日期
-    @Column (name = "wm_confirmed_diagnosis_code", length = 400)
-    private String wmConfirmedDiagnosisCode; // 确定诊断-西医诊断代码
-    @Column (name = "wm_confirmed_diagnosis_name", length = 400)
-    private String wmConfirmedDiagnosisName; // 确定诊断-西医诊断名称
-    @Column (name = "tcm_confirmed_diagnosis_code", length = 250)
-    private String tcmConfirmedDiagnosisCode; // 确定诊断-中医病名代码
-    @Column (name = "tcm_confirmed_diagnosis_name", length = 250)
-    private String tcmConfirmedDiagnosisName; // 确定诊断-中 医病名名称
-    @Column (name = "tcm_confirmed_syndrome_code", length = 250)
-    private String tcmConfirmedSyndromeCode; // 确定诊断-中医证候代码
-    @Column (name = "tcm_confirmed_syndrome_name", length = 250)
-    private String tcmConfirmedSyndromeName; // 确定诊断-中医证候名称
-    private Timestamp confirmedDiagnosisDate; // 确定诊断日期
-    @Column (name = "complementary_diagnosis_code", length = 50)
-    private String complementaryDiagnosisCode; // 补充诊断编码
-    @Column (name = "complementary_diagnosis_name", length = 250)
-    private String complementaryDiagnosisName; // 补充诊断名称
+    @Column(name = "PATIENT_ID", length = 80, nullable = false)
+    private String patientId;
 
-    private Timestamp complementaryDiagnosisDate; // 补充诊断日期
-    @Column (name = "admission_diagnosis_order", length = 2)
-    private String admissionDiagnosisOrder; // 入院诊断顺位
-    @Column (name = "visiting_physician_id", length = 50)
-    private String visitingPhysicianId; // 接诊医师
-    @Column (name = "resident_physician_id", length = 50)
-    private String residentPhysicianId; // 住院医师
-    @Column (name = "chief_physician_id", length = 50)
-    private String chiefPhysicianId; // 主治医师
-    @Column(name = "org_code", length = 9)
-    private String orgCode; // 医疗机构代码
-    @Column(name = "org_name", length = 100)
-    private String orgName; // 医疗机构名称
-    @Column(name = "dept_code", length = 20)
-    private String deptCode; // 科室代码
-    @Column(name = "dept_name", length = 50)
-    private String deptName; // 科室名称
-    @Column(name = "operator_id", length = 40)
-    private String operatorId; // 操作人 ID
-    private Timestamp operationTime; // 操作时间
+    @Column(name = "SERIAL_NUMBER", length = 20, nullable = false)
+    private String serialNumber;
+
+    @Column(name = "WARD_NAME", length = 50)
+    private String wardName;
+
+    @Column(name = "WARD_NO", length = 10)
+    private String wardNo;
+
+    @Column(name = "BED_NO", length = 10)
+    private String bedNo;
+
+    @Column(name = "PATIENT_NAME", length = 100, nullable = false)
+    private String patientName;
+
+    @Column(name = "ID_CARD_TYPE_CODE", length = 2)
+    private String idCardTypeCode;
+
+    @Column(name = "ID_CARD_TYPE_NAME", length = 20)
+    private String idCardTypeName;
+
+    @Column(name = "ID_CARD", length = 50)
+    private String idCard;
+
+    @Column(name = "ADMISSION_DATE")
+    private Timestamp admissionDate;
+
+    @Lob
+    @Column(name = "CHIEF_COMPLAINT")
+    private String chiefComplaint;
+
+    @Lob
+    @Column(name = "PRESENT_ILLNESS_HIS")
+    private String presentIllnessHis;
+
+    @Column(name = "HEALTH_STATUS_CODE", length = 2)
+    private String healthStatusCode;
+
+    @Lob
+    @Column(name = "PAST_ILLNESS_HIS")
+    private String pastIllnessHis;
+
+    @Column(name = "INFECTION_CODE", length = 2)
+    private String infectionCode;
+
+    @Lob
+    @Column(name = "NFECTION_HIS")   // 注意：INSERT 中是 NFECTION_HIS（可能是拼写错误）
+    private String infectionHis;
+
+    @Lob
+    @Column(name = "VACCINATION_HIS")
+    private String vaccinationHis;
+
+    @Lob
+    @Column(name = "OPERATION_HIS")
+    private String operationHis;
+
+    @Lob
+    @Column(name = "BLOOD_TRANSFUSION")
+    private String bloodTransfusion;
+
+    @Lob
+    @Column(name = "ALLERGY_HIS")
+    private String allergyHis;
+
+    @Lob
+    @Column(name = "PERSONAL_HIS")
+    private String personalHis;
+
+    @Lob
+    @Column(name = "MARITAL_HIS")
+    private String maritalHis;
+
+    @Lob
+    @Column(name = "MENSTRUAL_HIS")
+    private String menstrualHis;
+
+    @Lob
+    @Column(name = "FAMILY_HIS")
+    private String familyHis;
+
+    @Lob
+    @Column(name = "PHYSICAL_EXAMINATION")
+    private String physicalExamination;
+
+    @Lob
+    @Column(name = "SPECIALIZED_EXAMINATION")
+    private String specializedExamination;
+
+    @Lob
+    @Column(name = "STUDIES_SUMMARY_RESULT")
+    private String studiesSummaryResult;
+
+    @Lob
+    @Column(name = "OBSERVATION_RESULT")
+    private String observationResult;
+
+    @Column(name = "TREATMENT", length = 100)
+    private String treatment;
+
+    @Column(name = "WM_INITAL_DIAGNOSIS_CODE", length = 400)
+    private String wmInitalDiagnosisCode;
+
+    @Column(name = "WM_INITAL_DIAGNOSIS_NAME", length = 400)
+    private String wmInitalDiagnosisName;
+
+    @Column(name = "TCM_INITAL_DIAGNOSIS_CODE", length = 250)
+    private String tcmInitalDiagnosisCode;
+
+    @Column(name = "TCM_INITAL_DIAGNOSIS_NAME", length = 250)
+    private String tcmInitalDiagnosisName;
+
+    @Column(name = "TCM_INITAL_SYNDROME_CODE", length = 250)
+    private String tcmInitalSyndromeCode;
+
+    @Column(name = "TCM_INITAL_SYNDROME_NAME", length = 250)
+    private String tcmInitalSyndromeName;
+
+    @Column(name = "INITAL_DIAGNOSIS_DATE")
+    private Timestamp initalDiagnosisDate;
+
+    @Column(name = "WM_REVISED_DIAGNOSIS_CODE", length = 400)
+    private String wmRevisedDiagnosisCode;
+
+    @Column(name = "WM_REVISED_DIAGNOSIS_NAME", length = 400)
+    private String wmRevisedDiagnosisName;
+
+    @Column(name = "TCM_REVISED_DIAGNOSIS_CODE", length = 250)
+    private String tcmRevisedDiagnosisCode;
+
+    @Column(name = "TCM_REVISED_DIAGNOSIS_NAME", length = 250)
+    private String tcmRevisedDiagnosisName;
+
+    @Column(name = "TCM_REVISED_SYNDROME_CODE", length = 250)
+    private String tcmRevisedSyndromeCode;
+
+    @Column(name = "TCM_REVISED_SYNDROME_NAME", length = 250)
+    private String tcmRevisedSyndromeName;
+
+    @Column(name = "REVISED_DIAGNOSIS_DATE")
+    private Timestamp revisedDiagnosisDate;
+
+    @Column(name = "WM_CONFIRMED_DIAGNOSIS_CODE", length = 400)
+    private String wmConfirmedDiagnosisCode;
+
+    @Column(name = "WM_CONFIRMED_DIAGNOSIS_NAME", length = 400)
+    private String wmConfirmedDiagnosisName;
+
+    @Column(name = "TCM_CONFIRMED_DIAGNOSIS_CODE", length = 250)
+    private String tcmConfirmedDiagnosisCode;
+
+    @Column(name = "TCM_CONFIRMED_DIAGNOSIS_NAME", length = 250)
+    private String tcmConfirmedDiagnosisName;
+
+    @Column(name = "TCM_CONFIRMED_SYNDROME_CODE", length = 250)
+    private String tcmConfirmedSyndromeCode;
+
+    @Column(name = "TCM_CONFIRMED_SYNDROME_NAME", length = 250)
+    private String tcmConfirmedSyndromeName;
+
+    @Column(name = "CONFIRMED_DIAGNOSIS_DATE")
+    private Timestamp confirmedDiagnosisDate;
+
+    @Column(name = "COMPLEMENTARY_DIAGNOSIS_CODE", length = 50)
+    private String complementaryDiagnosisCode;
+
+    @Column(name = "COMPLEMENTARY_DIAGNOSIS_NAME", length = 250)
+    private String complementaryDiagnosisName;
+
+    @Column(name = "COMPLEMENTARY_DIAGNOSIS_DATE")
+    private Timestamp complementaryDiagnosisDate;
+
+    @Column(name = "ADMISSION_DIAGNOSIS_ORDER", length = 2)
+    private String admissionDiagnosisOrder;
+
+    @Column(name = "VISITING_PHYSICIAN_ID", length = 50)
+    private String visitingPhysicianId;
+
+    @Column(name = "RESIDENT_PHYSICIAN_ID", length = 50)
+    private String residentPhysicianId;
+
+    @Column(name = "CHIEF_PHYSICIAN_ID", length = 50)
+    private String chiefPhysicianId;
+
+    @Column(name = "ORG_CODE", length = 9)
+    private String orgCode;
+
+    @Column(name = "ORG_NAME", length = 100)
+    private String orgName;
+
+    @Column(name = "DEPT_CODE", length = 20)
+    private String deptCode;
+
+    @Column(name = "DEPT_NAME", length = 50)
+    private String deptName;
+
+    @Column(name = "OPERATOR_ID", length = 40)
+    private String operatorId;
+
+    @Column(name = "OPERATION_TIME", updatable = false)
+    private Timestamp operationTime;
 }

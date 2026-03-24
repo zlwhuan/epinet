@@ -1,5 +1,7 @@
 package com.clzk.epinet.base.service;
 
+import com.clzk.epinet.emr.model.EmrExLabItem;
+import com.clzk.epinet.emr.model.EmrOrderItem;
 import com.clzk.epinet.emr.model.EmrPatientInfo;
 import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
@@ -181,5 +183,64 @@ public class QueryService {
         }
 
         return viewName;
+    }
+
+    /**
+     * 根据父表ID列表查询子表数据（支持动态判断关联字段）
+     *
+     * @param entityClass 实体类（必须有 @Table 注解）
+     * @param parentIds   父表ID列表（例如 EMR_EX_LAB 的 ID 列表）
+     * @param <T>         实体类型
+     * @return 查询结果列表
+     */
+    public <T> List<T> queryByParentIds(Class<T> entityClass, List<String> parentIds) {
+        if (parentIds == null || parentIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        Table tableAnno = entityClass.getAnnotation(Table.class);
+        if (tableAnno == null || tableAnno.name().isEmpty()) {
+            throw new RuntimeException("实体类缺少 @Table 注解或 name 属性");
+        }
+
+        String viewName = getDynamicTableName(tableAnno);
+
+        // 根据不同实体类决定使用哪个字段做 IN 查询
+        String inField;
+        if (entityClass == EmrExLabItem.class) {
+            inField = "EX_LAB_ID";          // 检验项目表关联检验主表
+        }
+        else if (entityClass == EmrOrderItem.class) {
+            inField = "ORDER_ID";           // 医嘱明细表关联医嘱主表
+        }
+        else {
+            // 默认使用 ID 字段（可根据需要继续扩展）
+            inField = "ID";
+            log.warn("实体类 {} 未配置专用 parent 字段，默认使用 ID 进行 IN 查询", entityClass.getSimpleName());
+        }
+
+        String sql = """
+            SELECT * FROM %s e 
+            WHERE e.%s IN (:parentIds)
+            ORDER BY e.%s ASC
+            """.formatted(viewName, inField, inField);
+
+        try {
+            Query query = viewEntityManager.createNativeQuery(sql, entityClass);
+            query.setParameter("parentIds", parentIds);
+
+            @SuppressWarnings("unchecked")
+            List<T> result = query.getResultList();
+
+            log.info("查询 {} 通过 {} IN {} 条记录，返回 {} 条数据",
+                    entityClass.getSimpleName(), inField, parentIds.size(), result.size());
+
+            return result;
+
+        } catch (Exception e) {
+            log.error("queryByParentIds 查询失败，实体: {}, 字段: {}, parentIds数量: {}",
+                    entityClass.getSimpleName(), inField, parentIds.size(), e);
+            return Collections.emptyList();
+        }
     }
 }

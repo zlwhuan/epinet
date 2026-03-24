@@ -72,23 +72,23 @@ public class EmrSyncController {
     public ApiResponse syncUser(@RequestParam(required = false) String orgCode,
                                 @RequestParam(required = false) LocalDateTime start,
                                 @RequestParam(required = false) LocalDateTime end) {
-//        List<BaseUser> dataList = queryService.queryViewIncremental(BaseUser.class, orgCode, start, end);
-        List<EmrBaseUser> userList = emrBaseUserRepository.findAll();
-        List<BaseUser> dataList = userList.stream().map(user -> {
-            BaseUser baseUser = new BaseUser();
-            baseUser.setId(user.getId());
-            baseUser.setOrgCode(user.getOrgCode());
-            baseUser.setDeptCode(user.getDeptCode());
-            baseUser.setUserName(user.getUserName());
-            baseUser.setIdCardTypeCode(user.getIdCardTypeCode());
-            baseUser.setIdCard(user.getIdCard());
-            baseUser.setTel(user.getTel());
-            baseUser.setPhysicianNo(user.getPhysicianNo());
-            baseUser.setLoginName(user.getLoginName());
-            baseUser.setCreateTime(user.getCreateTime());
-            baseUser.setUserTypeCode(user.getUserTypeCode());
-            return baseUser;
-        }).toList();
+        List<BaseUser> dataList = queryService.queryViewIncremental(BaseUser.class, orgCode, start, end);
+//        List<EmrBaseUser> userList = emrBaseUserRepository.findAll();
+//        List<BaseUser> dataList = userList.stream().map(user -> {
+//            BaseUser baseUser = new BaseUser();
+//            baseUser.setId(user.getId());
+//            baseUser.setOrgCode(user.getOrgCode());
+//            baseUser.setDeptCode(user.getDeptCode());
+//            baseUser.setUserName(user.getUserName());
+//            baseUser.setIdCardTypeCode(user.getIdCardTypeCode());
+//            baseUser.setIdCard(user.getIdCard());
+//            baseUser.setTel(user.getTel());
+//            baseUser.setPhysicianNo(user.getPhysicianNo());
+//            baseUser.setLoginName(user.getLoginName());
+//            baseUser.setCreateTime(user.getCreateTime());
+//            baseUser.setUserTypeCode(user.getUserTypeCode());
+//            return baseUser;
+//        }).toList();
 //        dataList = dataList.stream().limit(100).toList();
         SyncResult syncResult = incrementalSyncExecutor.syncIncrementalManual(BaseUser.class, dataList);
         return ApiResponse.ok(syncResult.toString());
