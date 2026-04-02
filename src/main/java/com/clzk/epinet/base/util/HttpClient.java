@@ -44,9 +44,9 @@ public class HttpClient {
             // 发送请求并获取响应
             ResponseEntity<ApiResponse> responseEntity = restTemplate.exchange(url, method, entity, ApiResponse.class);
 // 使用 Jackson 转换为 JSON 字符串
-            ObjectMapper objectMapper = new ObjectMapper();
-            String jsonBody = objectMapper.writeValueAsString(requestBody);
-            System.out.println("Request Body JSON: " + jsonBody);
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            String jsonBody = objectMapper.writeValueAsString(requestBody);
+//            System.out.println("Request Body JSON: " + jsonBody);
             // 返回封装后的响应数据
             return responseEntity.getBody();
         } catch (Exception e) {
@@ -54,6 +54,7 @@ public class HttpClient {
             ApiResponse apiResponse = new ApiResponse();
             apiResponse.setResult(false);
             apiResponse.setDesc(e.getMessage());
+            e.printStackTrace();
             return apiResponse;
         }
     }

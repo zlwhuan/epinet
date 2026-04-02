@@ -212,7 +212,6 @@ public class EmrInfReport extends BaseEntity {
     private String contactflagName; // 密切接触者有无同症状名称
     @Column(name = "fill_doctor", length = 20)
     private String fillDoctor; // 填卡医生
-    @Lob
     @Column(name = "notes")
     private String notes; // 备注
     @Column(name = "ncv_severity_code", length = 2)

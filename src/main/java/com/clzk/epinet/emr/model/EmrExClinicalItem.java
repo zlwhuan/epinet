@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
@@ -55,5 +56,5 @@ public class EmrExClinicalItem extends BaseEntity {
 
     /** 操作时间 */
     @Column(name = "operation_time")
-    private LocalDateTime operationTime;
+    private Timestamp operationTime;
 }

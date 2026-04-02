@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * 医院信息系统用户信息实体
  */
 @Entity
-@Table(name = "CRB_BASE_USER")
+@Table(name = "TEST_BASE_USER")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class BaseUser extends BaseEntity {

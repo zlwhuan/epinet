@@ -31,6 +31,10 @@ spring:
 
 logging:
   level:
-    root: INFO
-    org.hibernate.SQL: ERROR
-    org.hibernate.orm.jdbc.bind: WARN   # Hibernate 6+ 显示绑定参数的详细日志
+    root: INFO                    # 或者改成 WARN（更干净）
+    org.hibernate.SQL: ERROR      # 关闭 SQL 语句输出（你已经设为 ERROR）
+    org.hibernate.orm.jdbc.bind: ERROR   # 关键！关闭 Hibernate 6+ 的绑定参数详细日志
+    # 可选：其他常用 Hibernate 日志也一起关掉
+    org.hibernate: ERROR
+    org.hibernate.type: ERROR
+    org.hibernate.orm: ERROR

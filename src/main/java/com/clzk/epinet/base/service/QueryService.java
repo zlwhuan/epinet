@@ -1,8 +1,6 @@
 package com.clzk.epinet.base.service;
 
-import com.clzk.epinet.emr.model.EmrExLabItem;
-import com.clzk.epinet.emr.model.EmrOrderItem;
-import com.clzk.epinet.emr.model.EmrPatientInfo;
+import com.clzk.epinet.emr.model.*;
 import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,11 +35,20 @@ public class QueryService {
     }
 
     public EmrPatientInfo findPatientById(String patientId) {
-        String jpql = "SELECT p FROM EmrPatientInfo p WHERE p.id = :patientId";
-        TypedQuery<EmrPatientInfo> query = viewEntityManager.createQuery(jpql, EmrPatientInfo.class);
+        Table tableAnno = EmrPatientInfo.class.getAnnotation(Table.class);
+
+        if (tableAnno == null || tableAnno.name().isEmpty()) {
+            throw new RuntimeException("实体类缺少@Table name");
+        }
+
+        String viewName = getDynamicTableName(tableAnno);
+
+
+        String sql = "SELECT * FROM " + viewName + " e WHERE e.id = :patientId";
+        Query query = viewEntityManager.createNativeQuery(sql, EmrPatientInfo.class);
         query.setParameter("patientId", patientId);
         try {
-            return query.getSingleResult();
+            return (EmrPatientInfo) query.getSingleResult();
         } catch (NoResultException e) {
             log.error("未找到患者信息，patientId: {}", patientId);
             return null;
@@ -116,13 +123,21 @@ public class QueryService {
 //            params.put("end", Timestamp.valueOf(end));
 //        }
         if (start != null) {
-            sql.append(" AND e.").append(timeField).append(" >= TO_TIMESTAMP(:start, 'YYYY-MM-DD HH24:MI:SS') ");
+            if (entityClass == BaseUser.class || entityClass == EmrPatientInfo.class || entityClass == EmrAdmissionInfo.class || entityClass == EmrDischargeInfo.class){
+                sql.append(" AND e.").append(timeField).append(" >= :start");
+            }else {
+                sql.append(" AND e.").append(timeField).append(" >= TO_TIMESTAMP(:start, 'YYYY-MM-DD HH24:MI:SS') ");
+            }
             params.put("start", start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             // 或更精确：如果有纳秒，用 'YYYY-MM-DD HH24:MI:SS.FF9'
         }
 
         if (end != null) {
-            sql.append(" AND e.").append(timeField).append(" <= TO_TIMESTAMP(:end, 'YYYY-MM-DD HH24:MI:SS') ");
+            if (entityClass == BaseUser.class || entityClass == EmrPatientInfo.class || entityClass == EmrAdmissionInfo.class || entityClass == EmrDischargeInfo.class){
+                sql.append(" AND e.").append(timeField).append(" >= :end");
+            }else {
+                sql.append(" AND e.").append(timeField).append(" <= TO_TIMESTAMP(:end, 'YYYY-MM-DD HH24:MI:SS') ");
+            }
             params.put("end", end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         }
 
@@ -205,42 +220,57 @@ public class QueryService {
 
         String viewName = getDynamicTableName(tableAnno);
 
-        // 根据不同实体类决定使用哪个字段做 IN 查询
-        String inField;
-        if (entityClass == EmrExLabItem.class) {
-            inField = "EX_LAB_ID";          // 检验项目表关联检验主表
-        }
-        else if (entityClass == EmrOrderItem.class) {
-            inField = "ORDER_ID";           // 医嘱明细表关联医嘱主表
-        }
-        else {
-            // 默认使用 ID 字段（可根据需要继续扩展）
-            inField = "ID";
-            log.warn("实体类 {} 未配置专用 parent 字段，默认使用 ID 进行 IN 查询", entityClass.getSimpleName());
-        }
+        // 根据实体类确定 IN 字段
+        String inField = getInField(entityClass);
 
-        String sql = """
+        // ==================== 核心优化：分批查询 ====================
+        final int BATCH_SIZE = 800;           // 推荐 500~1000，根据数据库调整
+        List<T> result = new ArrayList<>(parentIds.size());
+
+        for (int i = 0; i < parentIds.size(); i += BATCH_SIZE) {
+            int end = Math.min(i + BATCH_SIZE, parentIds.size());
+            List<String> batch = parentIds.subList(i, end);
+
+            String sql = """
             SELECT * FROM %s e 
             WHERE e.%s IN (:parentIds)
             ORDER BY e.%s ASC
             """.formatted(viewName, inField, inField);
 
-        try {
-            Query query = viewEntityManager.createNativeQuery(sql, entityClass);
-            query.setParameter("parentIds", parentIds);
+            try {
+                Query query = viewEntityManager.createNativeQuery(sql, entityClass);
+                query.setParameter("parentIds", batch);
 
-            @SuppressWarnings("unchecked")
-            List<T> result = query.getResultList();
+                @SuppressWarnings("unchecked")
+                List<T> batchResult = query.getResultList();
 
-            log.info("查询 {} 通过 {} IN {} 条记录，返回 {} 条数据",
-                    entityClass.getSimpleName(), inField, parentIds.size(), result.size());
+                result.addAll(batchResult);
 
-            return result;
+                log.debug("查询 {} 批次 [{}-{}]，IN {} 条，返回 {} 条",
+                        entityClass.getSimpleName(), i, end - 1, batch.size(), batchResult.size());
 
-        } catch (Exception e) {
-            log.error("queryByParentIds 查询失败，实体: {}, 字段: {}, parentIds数量: {}",
-                    entityClass.getSimpleName(), inField, parentIds.size(), e);
-            return Collections.emptyList();
+            } catch (Exception e) {
+                log.error("queryByParentIds 批次查询失败，实体: {}, 字段: {}, 批次大小: {}",
+                        entityClass.getSimpleName(), inField, batch.size(), e);
+                // 可选择继续其他批次，或直接抛出
+            }
         }
+
+        log.info("查询 {} 通过 {} IN {} 条记录（{} 批次），共返回 {} 条数据",
+                entityClass.getSimpleName(), inField, parentIds.size(),
+                (parentIds.size() + BATCH_SIZE - 1) / BATCH_SIZE, result.size());
+
+        return result;
+    }
+
+    private String getInField(Class<?> entityClass) {
+        if (entityClass == EmrExLabItem.class) {
+            return "EX_LAB_ID";
+        }
+        if (entityClass == EmrOrderItem.class) {
+            return "ORDER_ID";
+        }
+        log.warn("实体类 {} 未配置专用 parent 字段，默认使用 ID", entityClass.getSimpleName());
+        return "ID";
     }
 }

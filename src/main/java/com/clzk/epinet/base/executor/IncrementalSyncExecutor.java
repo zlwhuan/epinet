@@ -51,18 +51,21 @@ public class IncrementalSyncExecutor {
 
         int success = 0;
         int total = increments.size();
-
+        List<T> newIncrements = new ArrayList<>();
         for (T item : increments) {
             try {
                 handleDependenciesIfNeeded(item);   // 关键：处理前置依赖
-                apiService.syncSingleObject(item);
+                Object o = apiService.syncSingleObject(item);
+                if (o != null) {
+                    newIncrements.add(item);
+                }
                 success++;
             } catch (Exception e) {
                 log.error("同步失败 {} id={}: {}", typeName, getId(item), e.getMessage());
                 // 可记录失败项，后续加重试机制
             }
         }
-        handleAfterIfNeeded(entityType, increments); // 关键：处理后续依赖
+        handleAfterIfNeeded(entityType, newIncrements); // 关键：处理后续依赖
 
         if (success == total) {
             watermarkService.updateWatermark(typeName, now, success, success + "/" + total);
@@ -93,8 +96,8 @@ public class IncrementalSyncExecutor {
 
         for (Object item : itemList) {
             try {
-                handleDependenciesIfNeeded(item);   // 关键：处理前置依赖
-                apiService.syncSingleObject(item);
+//                handleDependenciesIfNeeded(item);   // 关键：处理前置依赖
+                Object o = apiService.syncSingleObject(item);
                 success++;
             } catch (Exception e) {
                 log.error("同步失败 {} id={}: {}", item.getClass(), getId(item), e.getMessage());
@@ -116,7 +119,7 @@ public class IncrementalSyncExecutor {
 
             EmrPatientInfo patient = queryService.findPatientById(patientIdStr);
             if (patient != null) {
-                apiService.syncSingleObject(patient);
+                Object o = apiService.syncSingleObject(patient);
                 patientExistenceCache.put(patientId, true);
             }
         }
@@ -148,7 +151,7 @@ public class IncrementalSyncExecutor {
         for (T item : increments) {
             try {
                 handleDependenciesIfNeeded(item);   // 关键：处理前置依赖
-                apiService.syncSingleObject(item);
+                Object o = apiService.syncSingleObject(item);
                 success++;
             } catch (Exception e) {
                 log.error("同步失败 {} id={}: {}", typeName, getId(item), e.getMessage());

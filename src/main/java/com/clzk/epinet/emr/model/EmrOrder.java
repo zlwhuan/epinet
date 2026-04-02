@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * 电子病历（EMR）医嘱处方实体类
  */
 @Entity
-@Table(name = "EMR_ORDER")
+@Table(name = "TEST_ORDER")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class EmrOrder extends BaseEntity {
@@ -114,7 +114,6 @@ public class EmrOrder extends BaseEntity {
     /**
      * 处方备注信息
      */
-    @Lob
     @Column(name = "PRESCRIPTION_NOTES")
     private String prescriptionNotes;
 
@@ -152,5 +151,5 @@ public class EmrOrder extends BaseEntity {
      * 操作时间
      */
     @Column(name = "OPERATION_TIME", updatable = false)
-    private LocalDateTime operationTime;
+    private Timestamp operationTime;
 }

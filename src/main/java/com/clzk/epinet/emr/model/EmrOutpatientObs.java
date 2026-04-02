@@ -34,28 +34,21 @@ public class EmrOutpatientObs extends BaseEntity {
     private String idCard; // 身份证件号码
     @Column(name = "allergy_his_flag", length = 1)
     private String allergyHisFlag; // 过敏史标志
-    @Lob
     @Column(name = "allergy_his")
     private String allergyHis; // 过敏史描述
     private Timestamp outpatientDate; // 就诊日期时间
     @Column(name = "inital_diagnosis_code", length = 1)
     private String initalDiagnosisCode; // 初步诊断代码
-    @Lob
     @Column(name = "chief_complaint")
     private String chiefComplaint; // 主诉
-    @Lob
     @Column(name = "present_illness_his")
     private String presentIllnessHis; // 现病史
-    @Lob
     @Column(name = "past_illness_his")
     private String pastIllnessHis; // 既往史
-    @Lob
     @Column(name = "physical_examination")
     private String physicalExamination; // 体格检查
-    @Lob
     @Column(name = "observation_result")
     private String observationResult; // 中医“四诊”观察结果
-    @Lob
     @Column(name = "studies_summary_result")
     private String studiesSummaryResult; // 辅助检查
     @Column(name = "wm_diagnosis_code", length = 400)
@@ -74,7 +67,6 @@ public class EmrOutpatientObs extends BaseEntity {
     private String differentiationBasis; // 辨证依据
     @Column(name = "treatment", length = 100)
     private String treatment; // 治则治法
-    @Lob
     @Column(name = "course")
     private String course; // 急诊留观病程记录
     private Timestamp observationDate; // 收入观察室日期时间

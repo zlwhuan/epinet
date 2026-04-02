@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  * 入院记录信息 - 记录患者的入院基本信息
  */
 @Entity
-@Table(name = "EMR_ADMISSION_INFO")
+@Table(name = "TEST_ADMISSION_INFO")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class EmrAdmissionInfo extends BaseEntity {
@@ -50,73 +50,57 @@ public class EmrAdmissionInfo extends BaseEntity {
     @Column(name = "ADMISSION_DATE")
     private Timestamp admissionDate;
 
-    @Lob
     @Column(name = "CHIEF_COMPLAINT")
     private String chiefComplaint;
 
-    @Lob
     @Column(name = "PRESENT_ILLNESS_HIS")
     private String presentIllnessHis;
 
     @Column(name = "HEALTH_STATUS_CODE", length = 2)
     private String healthStatusCode;
 
-    @Lob
     @Column(name = "PAST_ILLNESS_HIS")
     private String pastIllnessHis;
 
     @Column(name = "INFECTION_CODE", length = 2)
     private String infectionCode;
 
-    @Lob
     @Column(name = "NFECTION_HIS")   // 注意：INSERT 中是 NFECTION_HIS（可能是拼写错误）
     private String infectionHis;
 
-    @Lob
     @Column(name = "VACCINATION_HIS")
     private String vaccinationHis;
 
-    @Lob
     @Column(name = "OPERATION_HIS")
     private String operationHis;
 
-    @Lob
     @Column(name = "BLOOD_TRANSFUSION")
     private String bloodTransfusion;
 
-    @Lob
     @Column(name = "ALLERGY_HIS")
     private String allergyHis;
 
-    @Lob
     @Column(name = "PERSONAL_HIS")
     private String personalHis;
 
-    @Lob
     @Column(name = "MARITAL_HIS")
     private String maritalHis;
 
-    @Lob
     @Column(name = "MENSTRUAL_HIS")
     private String menstrualHis;
 
-    @Lob
     @Column(name = "FAMILY_HIS")
     private String familyHis;
 
-    @Lob
     @Column(name = "PHYSICAL_EXAMINATION")
     private String physicalExamination;
 
-    @Lob
     @Column(name = "SPECIALIZED_EXAMINATION")
     private String specializedExamination;
 
-    @Lob
     @Column(name = "STUDIES_SUMMARY_RESULT")
     private String studiesSummaryResult;
 
-    @Lob
     @Column(name = "OBSERVATION_RESULT")
     private String observationResult;
 

@@ -13,7 +13,7 @@ import java.util.List;
  * 患者基本信息 - 记录患者的基本信息
  */
 @Entity
-@Table(name = "EMR_PATIENT_INFO")
+@Table(name = "TEST_PATIENT_INFO")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class EmrPatientInfo extends BaseEntity {

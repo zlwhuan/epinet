@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
  * 用于存储国家传染病智能监测预警前置软件中电子病历（EMR）医嘱处方条目信息
  */
 @Entity
-@Table(name = "EMR_ORDER_ITEM")
+@Table(name = "TEST_ORDER_ITEM")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class EmrOrderItem extends BaseEntity {
@@ -103,5 +104,5 @@ public class EmrOrderItem extends BaseEntity {
      * 操作时间
      */
     @Column(name = "OPERATION_TIME", updatable = false)
-    private LocalDateTime operationTime;
+    private Timestamp operationTime;
 }

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  */
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "CRB_BASE_DEPT")
+@Table(name = "TEST_BASE_DEPT")
 @Data
 public class BaseDept extends BaseEntity {
 

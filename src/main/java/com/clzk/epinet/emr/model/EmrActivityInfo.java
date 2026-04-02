@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  * 诊疗活动信息 - 记录患者的诊疗活动信息
  */
 @Entity
-@Table(name = "EMR_ACTIVITY_INFO")
+@Table(name = "TEST_ACTIVITY_INFO")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class EmrActivityInfo extends BaseEntity {

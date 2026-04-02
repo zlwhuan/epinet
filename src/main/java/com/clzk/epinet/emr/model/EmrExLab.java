@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  * 检验报告实体类
  */
 @Entity
-@Table(name = "EMR_EX_LAB")
+@Table(name = "TEST_EX_LAB")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class EmrExLab extends BaseEntity {
@@ -173,21 +173,18 @@ public class EmrExLab extends BaseEntity {
     /**
      * 检验报告结果-客观所见
      */
-    @Lob
     @Column(name = "EXAMINATION_OBJECTIVE_DESC")
     private String examinationObjectiveDesc;
 
     /**
      * 检验报告结果-主观提示
      */
-    @Lob
     @Column(name = "EXAMINATION_SUBJECTIVE_DESC")
     private String examinationSubjectiveDesc;
 
     /**
      * 检验报告备注
      */
-    @Lob
     @Column(name = "EXAMINATION_NOTES")
     private String examinationNotes;
 

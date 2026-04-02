@@ -38,13 +38,10 @@ public class EmrFirstCourse extends BaseEntity {
     private String wardNo; // 病房号
     private String bedNo; // 病床号
     private String createTime; // 记录创建时间
-    @Lob
     @Column(name = "chief_complaint")
     private String chiefComplaint; // 主诉
-    @Lob
     @Column(name = "present_illness_his")
     private String presentIllnessHis; // 病例特点
-    @Lob
     @Column(name = "observation_result")
     private String observationResult; // 中医“四诊”观察结果
     private String diagnosisBasis; // 诊断依据
@@ -74,7 +71,6 @@ public class EmrFirstCourse extends BaseEntity {
     private String tcmPrimarySyndromeName; // 鉴别诊断-中医证候名称
     @Column(name = "treatment", length = 100)
     private String treatment; // 治则治法
-    @Lob
     @Column(name = "treatment_plan")
     private String treatmentPlan; // 诊疗计划
     @Column(name = "disease_progression_code", length = 1)

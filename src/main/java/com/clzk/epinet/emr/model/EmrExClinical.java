@@ -201,7 +201,6 @@ public class EmrExClinical extends BaseEntity {
     /**
      * 主诉
      */
-    @Lob
     @Column(name = "chief_complaint")
     private String chiefComplaint;
 
@@ -239,7 +238,7 @@ public class EmrExClinical extends BaseEntity {
      * 操作时间
      */
     @Column(name = "operation_time")
-    private LocalDateTime operationTime;
+    private Timestamp operationTime;
 
     /**
      * 检查报告明细

@@ -34,52 +34,37 @@ public class EmrOutpatientRecord extends BaseEntity {
     private String idCard; // 身份证件号码
     @Column(name = "allergy_his_flag", length = 1)
     private String allergyHisFlag; // 过敏史标识
-    @Lob
     @Column(name = "allergy_his")
     private String allergyHis; // 过敏史描述
     private Timestamp outpatientDate; // 就诊日期时间
     @Column(name = "inital_diagnosis_code", length = 1)
     private String initialDiagnosisCode; // 初步诊断代码
-    @Lob
     @Column(name = "chief_complaint")
     private String chiefComplaint; // 主诉
-    @Lob
     @Column(name = "present_illness_his")
     private String presentIllnessHis; // 现病史
-    @Lob
     @Column(name = "past_illness_his")
     private String pastIllnessHis; // 既往史
-    @Lob
     @Column(name = "infection_his")
     private String infectionHis; // 传染病史
-    @Lob
     @Column(name = "vaccination_his")
     private String vaccinationHis; // 预防接种史
-    @Lob
     @Column(name = "operation_his")
     private String operationHis; // 手术史
-    @Lob
     @Column(name = "blood_transfusion")
     private String bloodTransfusion; // 输血史
-    @Lob
     @Column(name = "personal_his")
     private String personalHis; // 个人史
-    @Lob
     @Column(name = "marital_his")
     private String maritalHis; // 婚姻史
-    @Lob
     @Column(name = "menstrual_his")
     private String menstrualHis; // 月经史
-    @Lob
     @Column(name = "family_his")
     private String familyHis; // 家族史
-    @Lob
     @Column(name = "physical_examination")
     private String physicalExamination; // 体格检查
-    @Lob
     @Column(name = "observation_result")
     private String observationResult; // 中医“四诊”观察结果
-    @Lob
     @Column(name = "studies_summary_result")
     private String studiesSummaryResult; // 辅助检查
     @Column(name = "wm_diagnosis_code", length = 400)

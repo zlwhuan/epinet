@@ -75,7 +75,6 @@ public class EmrAdmissionRecord extends BaseEntity {
     private String externalCausesCode; // 损伤中毒的外部原因疾病编码
     @Column(name = "external_causes_name", length = 200)
     private String externalCausesName; // 损伤中毒的外部原因疾病名称
-    @Lob
     @Column(name = "external_causes_system_name")
     private String externalCausesSystemName; // 损伤中毒的外部原因
     @Column(name = "pathological_diagnosis_code", length = 50)
@@ -86,7 +85,6 @@ public class EmrAdmissionRecord extends BaseEntity {
     private String pathologicalNo; // 病理号
     @Column(name = "allergy_code", length = 1)
     private String allergyCode; // 药物过敏标志
-    @Lob
     @Column(name = "allergy_drug", length = 50)
     private String allergyDrug; // 过敏药物
     @Column(name = "autopsy_code", length = 1)

@@ -5,13 +5,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
  * 检验报告项目实体类
  */
 @Entity
-@Table(name = "EMR_EX_LAB_ITEM")
+@Table(name = "TEST_EX_LAB_ITEM")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class EmrExLabItem extends BaseEntity {
@@ -98,5 +99,5 @@ public class EmrExLabItem extends BaseEntity {
 
     /** 操作时间 */
     @Column(name = "OPERATION_TIME", updatable = false)
-    private LocalDateTime operationTime;
+    private Timestamp operationTime;
 }

@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  * 出院记录信息 - 记录患者的出院情况
  */
 @Entity
-@Table(name = "EMR_DISCHARGE_INFO")
+@Table(name = "TEST_DISCHARGE_INFO")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class EmrDischargeInfo extends BaseEntity {
@@ -59,18 +59,15 @@ public class EmrDischargeInfo extends BaseEntity {
     @Column(name = "ADMISSION_DIAGNOSIS_NAME", length = 200)
     private String admissionDiagnosisName; // 入院诊断名称
 
-    @Lob
     @Column(name = "STUDIES_SUMMARY_RESULT")
     private String studiesSummaryResult; // 辅助检查
 
-    @Lob
     @Column(name = "OBSERVATION_RESULT")
     private String observationResult; // 观察结果
 
     @Column(name = "TREATMENT", length = 100)
     private String treatment; // 住院治疗
 
-    @Lob
     @Column(name = "TREATMENT_DESC")
     private String treatmentDesc; // 治疗描述
 
@@ -80,7 +77,6 @@ public class EmrDischargeInfo extends BaseEntity {
     @Column(name = "TCM_USE_METHOD", length = 50)
     private String tcmUseMethod; // 中药用药方法
 
-    @Lob
     @Column(name = "DISCHARGE_DESC")
     private String dischargeDesc; // 出院描述
 
@@ -105,7 +101,6 @@ public class EmrDischargeInfo extends BaseEntity {
     @Column(name = "TCM_DISCHARGE_SYNDROME_NAME", length = 250)
     private String tcmDischargeSyndromeName; // 出院诊断-中医证候名称
 
-    @Lob
     @Column(name = "DISCHARGE_SYMPTOMS_SIGNS")
     private String dischargeSymptomsSigns; // 出院时症状与体征
 

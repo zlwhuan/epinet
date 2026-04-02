@@ -63,8 +63,8 @@ public class BaseApiService {
         return apiUrls.get(clazz);
     }
 
-    public void syncSingleObject(Object entity) {
-        if (entity == null) return;
+    public Object syncSingleObject(Object entity) {
+        if (entity == null) return null;
 
         String url = getApiUrl(entity.getClass());
         if (url == null) {
@@ -75,7 +75,7 @@ public class BaseApiService {
         // orgCode 过滤（可以抽成 Filter 或 Predicate 后续优化）
         boolean shouldSyncByOrgCode = shouldSyncByOrgCode(converted);
         if (!shouldSyncByOrgCode) {
-            return;
+            return null;
         }
 
         ApiResponse resp = httpClient.post(url, converted);
@@ -83,6 +83,7 @@ public class BaseApiService {
         if (!resp.getResult()) {
             throw new RuntimeException("同步失败: " + resp.getDesc());
         }
+        return entity;
     }
 
     private boolean shouldSyncByOrgCode(Object entity) {

@@ -38,11 +38,9 @@ public class EmrDailyCourse extends BaseEntity {
     private String wardNo; // 病房号
     private String bedNo; // 病床号
     private String createTime; // 记录日期时间
-    @Lob
     @Column(name = "course")
     private String course; // 住院病程
     private String orderContent; // 医嘱内容
-    @Lob
     @Column(name = "observation_result")
     private String observationResult; // 中医“四诊”观察结果
     @Column(name = "treatment", length = 100)
