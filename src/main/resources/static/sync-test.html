@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>同步任务执行测试</title>
+
+  <link rel="stylesheet" href="index.css">
+  <script src="vue.global.js"></script>
+  <script src="axios.min.js"></script>
+  <script src="index.full.js"></script>
+  <script src="index.iife.min.js"></script>
+  <script src="zh-cn.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #f5f7fa;
+    }
+
+    .container {
+      padding: 20px;
+      background: #fff;
+    }
+
+    .task-card {
+      margin-bottom: 24px;
+    }
+
+    .result-box {
+      margin-top: 12px;
+      padding: 12px;
+      background: #f7f7f7;
+      border-radius: 4px;
+      font-size: 13px;
+      line-height: 1.8;
+      min-height: 40px;
+      word-break: break-all;
+    }
+
+    .result-success {
+      color: #67c23a;
+    }
+
+    .result-error {
+      color: #f56c6c;
+    }
+
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    .date-picker-wrapper {
+      width: 360px;
+      min-width: 340px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" class="container">
+    <!-- 标题区域 -->
+    <div style="padding: 16px 20px; border-bottom:1px solid #ebeef5; background:#fafafa; margin-bottom: 20px;">
+      <h3 style="margin: 0; color: #303133;">同步任务执行测试</h3>
+    </div>
+
+    <!-- 同步活动数据 -->
+    <el-card class="task-card" shadow="never">
+      <template #header>
+        <span style="font-weight: 600;">同步活动数据（/emr/sync/activity）</span>
+      </template>
+      <div class="form-row">
+        <el-input v-model="activityForm.orgCode" placeholder="机构编码 orgCode（必填）" style="width: 220px;" clearable />
+        <div class="date-picker-wrapper">
+          <el-date-picker
+            v-model="activityForm.dateRange"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="开始时间（必填）"
+            end-placeholder="结束时间（必填）"
+            value-format="YYYY-MM-DDTHH:mm:ss"
+            style="width: 100%;"
+          />
+        </div>
+        <el-button type="primary" :loading="activityLoading" @click="runSyncActivity">
+          <el-icon style="margin-right:4px;"><VideoPlay /></el-icon>
+          执行同步
+        </el-button>
+      </div>
+      <div v-if="activityResult !== null" class="result-box">
+        <span :class="activitySuccess ? 'result-success' : 'result-error'">
+          {{ activityResult }}
+        </span>
+      </div>
+    </el-card>
+
+    <!-- 同步科室数据 -->
+    <el-card class="task-card" shadow="never">
+      <template #header>
+        <span style="font-weight: 600;">同步科室数据（/emr/sync/dept）</span>
+      </template>
+      <div class="form-row">
+        <el-button type="primary" :loading="deptLoading" @click="runSyncDept">
+          <el-icon style="margin-right:4px;"><VideoPlay /></el-icon>
+          执行同步
+        </el-button>
+      </div>
+      <div v-if="deptResult !== null" class="result-box">
+        <span :class="deptSuccess ? 'result-success' : 'result-error'">
+          {{ deptResult }}
+        </span>
+      </div>
+    </el-card>
+
+    <!-- 同步用户数据 -->
+    <el-card class="task-card" shadow="never">
+      <template #header>
+        <span style="font-weight: 600;">同步用户数据（/emr/sync/user）</span>
+      </template>
+      <div class="form-row">
+        <el-input v-model="userForm.orgCode" placeholder="机构编码 orgCode（可选）" style="width: 220px;" clearable />
+        <div class="date-picker-wrapper">
+          <el-date-picker
+            v-model="userForm.dateRange"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="开始时间（可选）"
+            end-placeholder="结束时间（可选）"
+            value-format="YYYY-MM-DDTHH:mm:ss"
+            style="width: 100%;"
+          />
+        </div>
+        <el-button type="primary" :loading="userLoading" @click="runSyncUser">
+          <el-icon style="margin-right:4px;"><VideoPlay /></el-icon>
+          执行同步
+        </el-button>
+      </div>
+      <div v-if="userResult !== null" class="result-box">
+        <span :class="userSuccess ? 'result-success' : 'result-error'">
+          {{ userResult }}
+        </span>
+      </div>
+    </el-card>
+  </div>
+
+  <script>
+    const { createApp, ref } = Vue;
+
+    const app = createApp({
+      setup() {
+        // --- 同步活动数据 ---
+        const activityForm = ref({ orgCode: '', dateRange: [] });
+        const activityLoading = ref(false);
+        const activityResult = ref(null);
+        const activitySuccess = ref(false);
+
+        const runSyncActivity = async () => {
+          if (!activityForm.value.orgCode?.trim()) {
+            ElementPlus.ElMessage.warning('请输入机构编码');
+            return;
+          }
+          if (!activityForm.value.dateRange || activityForm.value.dateRange.length < 2) {
+            ElementPlus.ElMessage.warning('请选择开始时间和结束时间');
+            return;
+          }
+          activityLoading.value = true;
+          activityResult.value = null;
+          try {
+            const res = await axios.get('http://localhost:8080/emr/sync/activity', {
+              params: {
+                orgCode: activityForm.value.orgCode.trim(),
+                start: activityForm.value.dateRange[0],
+                end: activityForm.value.dateRange[1]
+              }
+            });
+            activitySuccess.value = true;
+            activityResult.value = JSON.stringify(res.data, null, 2);
+            ElementPlus.ElMessage.success('同步活动数据成功');
+          } catch (err) {
+            activitySuccess.value = false;
+            activityResult.value = err?.response?.data
+              ? JSON.stringify(err.response.data, null, 2)
+              : (err.message || '请求失败');
+            ElementPlus.ElMessage.error('同步活动数据失败');
+          } finally {
+            activityLoading.value = false;
+          }
+        };
+
+        // --- 同步科室数据 ---
+        const deptLoading = ref(false);
+        const deptResult = ref(null);
+        const deptSuccess = ref(false);
+
+        const runSyncDept = async () => {
+          deptLoading.value = true;
+          deptResult.value = null;
+          try {
+            const res = await axios.get('http://localhost:8080/emr/sync/dept');
+            deptSuccess.value = true;
+            deptResult.value = JSON.stringify(res.data, null, 2);
+            ElementPlus.ElMessage.success('同步科室数据成功');
+          } catch (err) {
+            deptSuccess.value = false;
+            deptResult.value = err?.response?.data
+              ? JSON.stringify(err.response.data, null, 2)
+              : (err.message || '请求失败');
+            ElementPlus.ElMessage.error('同步科室数据失败');
+          } finally {
+            deptLoading.value = false;
+          }
+        };
+
+        // --- 同步用户数据 ---
+        const userForm = ref({ orgCode: '', dateRange: [] });
+        const userLoading = ref(false);
+        const userResult = ref(null);
+        const userSuccess = ref(false);
+
+        const runSyncUser = async () => {
+          userLoading.value = true;
+          userResult.value = null;
+          try {
+            const params = {};
+            if (userForm.value.orgCode?.trim()) {
+              params.orgCode = userForm.value.orgCode.trim();
+            }
+            if (userForm.value.dateRange && userForm.value.dateRange.length === 2) {
+              params.start = userForm.value.dateRange[0];
+              params.end = userForm.value.dateRange[1];
+            }
+            const res = await axios.get('http://localhost:8080/emr/sync/user', { params });
+            userSuccess.value = true;
+            userResult.value = JSON.stringify(res.data, null, 2);
+            ElementPlus.ElMessage.success('同步用户数据成功');
+          } catch (err) {
+            userSuccess.value = false;
+            userResult.value = err?.response?.data
+              ? JSON.stringify(err.response.data, null, 2)
+              : (err.message || '请求失败');
+            ElementPlus.ElMessage.error('同步用户数据失败');
+          } finally {
+            userLoading.value = false;
+          }
+        };
+
+        return {
+          activityForm, activityLoading, activityResult, activitySuccess, runSyncActivity,
+          deptLoading, deptResult, deptSuccess, runSyncDept,
+          userForm, userLoading, userResult, userSuccess, runSyncUser
+        };
+      }
+    });
+
+    for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+      app.component(key, component);
+    }
+    app.use(ElementPlus, {
+      locale: ElementPlusLocaleZhCn
+    });
+    app.mount('#app');
+  </script>
+</body>
+
+</html>
